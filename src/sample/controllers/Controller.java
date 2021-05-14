@@ -1,4 +1,4 @@
-package sample;
+package sample.controllers;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,8 +15,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import sample.model.DataModel;
 
-import javax.xml.crypto.Data;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -40,7 +40,7 @@ public class Controller implements Initializable {
     @FXML
     private TextField textFieldUrl;
     List<DataModel> dataModelList = new ArrayList<>();
-    DataModel model = new DataModel();
+    String chartTitle,xLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -55,9 +55,9 @@ public class Controller implements Initializable {
     }
 
 
-    public void selectFile() {//Buton adı "Select File" ise dosya yolu ile parse metodu çağır, "Load Data" ise girilen url ile parse metodu çağır.
+    public void selectFile(ActionEvent e) {//Buton adı "Select File" ise dosya yolu ile parse metodu çağır, "Load Data" ise girilen url ile parse metodu çağır.
 
-        if (buttonSelect.getText().equals("Select File")) {
+        if (buttonSelect.getText().equals("Select File")) {//select file butonuna tıklanınca
 
             FileChooser fileChooser = new FileChooser();
 
@@ -73,36 +73,25 @@ public class Controller implements Initializable {
                 labelPath.setText(file.getPath());
                 buttonStartAnimation.setVisible(true);
                 comboBoxAnimationType.setVisible(true);
-                System.out.println(file.toURI() + " ile parsing'e gitti");
-                List<DataModel> geciciListe =  parseLocalXMLToObject(String.valueOf(file.toURI()));
-                System.out.println("Size: " + geciciListe.size());
-                for(DataModel model : geciciListe){
-                    System.out.println(model.toString());
-                }
+
+
             }
 
-        } else {
+        } else {//load data butonuna tıklanınca
             System.out.println(textFieldUrl.getText() + " ile parsing'e gitti");
-            parseOnlineXMLToObject(textFieldUrl.getText());
+            //parseOnlineXMLToObject(textFieldUrl.getText());/*TODO linkteki xml'e parsing yapma metodu eklenecek*/
 
         }
 
     }
 
-    private void parseOnlineXMLToObject(String text) {
+    public void startAnimationScene(ActionEvent e) {
+        String animationType = (String) comboBoxAnimationType.getValue();
+        System.out.println(animationType + " yapılacak");
+        if(animationType.equals("Bar Chart")){
+            //sceneyi aç. TODO
 
-
-        try {
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            URL url = new URL(text);//Stringi URL'e çevirdik
-            Document doc = builder.parse(url.openStream());
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
         }
-
 
     }
 
@@ -113,20 +102,25 @@ public class Controller implements Initializable {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(uri);//dokümanı tanımladık
             NodeList recordList = doc.getElementsByTagName("record");//record tagiyle tutulan tüm elemanları recordList'e at
+            chartTitle=doc.getElementsByTagName("title").item(0).getTextContent();
+            xLabel = doc.getElementsByTagName("xlabel").item(0).getTextContent();
+
+            //tüm nodları gez
             for (int i = 0; i < recordList.getLength(); i++) {
+                DataModel model = new DataModel();
                 Node r = recordList.item(i); //her bir recordList elemanını
                 if (r.getNodeType() == Node.ELEMENT_NODE) { //her node bir element ise
                     Element record = (Element) r;        //node'u record elementine at
-
-                    System.out.println();
+                    //System.out.println();
                     NodeList nameList = record.getChildNodes();
+                    //bir node içindeki değişkenleri kullanarak obje oluştur
                     for (int j = 0; j < nameList.getLength(); j++) {
                         Node n = nameList.item(j);
                         if (n.getNodeType() == Node.ELEMENT_NODE) {
-                            Element name = (Element) n;
 
-                            model.setKey(((Element) n).getAttribute("key"));
-
+                            if(!((Element) n).getAttribute("key").equals("")){
+                                model.setKey(((Element) n).getAttribute("key"));
+                            }
                             if (((Element) n).getAttribute("name").equals("Name")) {
                                 model.setName(n.getTextContent());
                             }
@@ -142,10 +136,13 @@ public class Controller implements Initializable {
                             if (((Element) n).getAttribute("name").equals("Category")) {
                                 model.setCategory(n.getTextContent());
                             }
+
                         }
                     }
-                    dataModelList.add(model);
+
                 }
+
+                dataModelList.add(model);
             }
 
         } catch (ParserConfigurationException e) {
@@ -189,7 +186,7 @@ public class Controller implements Initializable {
         });
     } //local veya internet seçeneklerine göre görünümü değiştirir
 
-    public void startAnimation() {
+    public void startAnimationScene() {
 
     }
 

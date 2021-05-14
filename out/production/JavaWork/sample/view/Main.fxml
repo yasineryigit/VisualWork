@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.Controller">
    <children>
       <Button fx:id="buttonSelect" alignment="CENTER" layoutX="272.0" layoutY="227.0" mnemonicParsing="false" onAction="#selectFile" prefHeight="31.0" prefWidth="86.0" text="Select" />
       <Label layoutX="229.0" layoutY="86.0" text="Please select a source">
@@ -25,7 +25,7 @@
             <Font size="10.0" />
          </font>
       </Label>
-      <Button fx:id="buttonStartAnimation" alignment="CENTER" layoutX="199.0" layoutY="339.0" mnemonicParsing="false" onAction="#startAnimation" prefHeight="31.0" prefWidth="232.0" text="Start Animation" />
+      <Button fx:id="buttonStartAnimation" alignment="CENTER" layoutX="199.0" layoutY="339.0" mnemonicParsing="false" onAction="#startAnimationScene" prefHeight="31.0" prefWidth="232.0" text="Start Animation" />
       <ComboBox fx:id="comboBoxAnimationType" layoutX="240.0" layoutY="296.0" prefWidth="150.0" promptText="Animation Type" />
       <ComboBox fx:id="comboBoxDataSource" layoutX="240.0" layoutY="148.0" prefWidth="150.0" promptText="Data source" />
       <TextField fx:id="textFieldUrl" layoutY="181.0" prefHeight="25.0" prefWidth="600.0" />
