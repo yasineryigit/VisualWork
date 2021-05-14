@@ -3,9 +3,9 @@ package sample;
 public class Bar implements Comparable<Bar>{
 
     private String name, category;
-    private int value;
+    private double value;
 
-    public Bar(String name, String category, int value) {
+    public Bar(String name, String category, double value) {
         this.name = name;
         this.category = category;
         this.value = value;
@@ -19,7 +19,7 @@ public class Bar implements Comparable<Bar>{
         return category;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 

@@ -1,13 +1,11 @@
 package sample;
 
-import java.util.concurrent.ConcurrentMap;
-
 public class Line implements Comparable<Line> {
 
     private String name, category;
-    private int value;
+    private double value;
 
-    public Line(String name, String category, int value) {
+    public Line(String name, String category, double value) {
         this.name = name;
         this.category = category;
         this.value = value;
@@ -21,7 +19,7 @@ public class Line implements Comparable<Line> {
         return category;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
