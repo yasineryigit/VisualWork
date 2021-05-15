@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sample.Bar;
 import sample.BarChart;
 import sample.model.DataModel;
 
@@ -22,7 +23,8 @@ public class BarChartSceneController implements Initializable {
     private BarChart mybarchartimiz;
     MainController mainController;
     private Parent root;
-    private String chartTitle,xLabel;
+    private String chartTitle, xLabel;
+    BarChart barChart = new BarChart();
 
     List<DataModel> dataModelList = new ArrayList<>();
 
@@ -31,22 +33,19 @@ public class BarChartSceneController implements Initializable {
 
     }
 
-    public void startAnimation(){
+    public void startAnimation() {
 
-        for(DataModel model : dataModelList){
-            System.out.println(model.toString());
+        for (Bar barModel : barChart.getBarList()) {
+            System.out.println(barModel.toString());
         }
         System.out.println("Date Models are ready");
-        System.out.println("Title: " + chartTitle);
-        System.out.println("xLabel: "+xLabel);
-        System.out.println(dataModelList.size());
+        System.out.println("Title: " + barChart.getTitle());
+        System.out.println("xLabel: " + barChart.getxAxisLabel());
+        System.out.println("Size: " + barChart.getBarList().size());
 
-        //TODO Create series and give it to the barchart
+        //TODO Create Series
     }
 
-    public void setDataModelList(List<DataModel> dataModelList) {
-        this.dataModelList = dataModelList;
-    }
 
     public void setChartTitle(String chartTitle) {
         this.chartTitle = chartTitle;
@@ -54,5 +53,9 @@ public class BarChartSceneController implements Initializable {
 
     public void setxLabel(String xLabel) {
         this.xLabel = xLabel;
+    }
+
+    public void setBarChart(BarChart barChart) {
+        this.barChart = barChart;
     }
 }

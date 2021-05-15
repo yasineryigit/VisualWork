@@ -19,6 +19,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import sample.Bar;
+import sample.BarChart;
 import sample.model.DataModel;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -43,8 +45,10 @@ public class MainController implements Initializable {
     private ComboBox<String> comboBoxAnimationType;
     @FXML
     private TextField textFieldUrl;
-    List<DataModel> dataModelList = new ArrayList<>();
+    List<Bar> barList = new ArrayList<>();
     String chartTitle,xLabel;
+    BarChart barChart;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -79,6 +83,14 @@ public class MainController implements Initializable {
                 comboBoxAnimationType.setVisible(true);
                 parseLocalXMLToObject(String.valueOf(file.toURI()));//verilen dosyayı parse et
 
+                barChart = new BarChart(barList,chartTitle,xLabel); //eklenen verilerle barChart objesi oluştur
+
+                //TESTING
+                for(Bar barModel : barChart.getBarList()){
+                    System.out.println(barModel.toString());
+                }
+                System.out.println("Bunlarla grafik çizdirilecek");
+                System.out.println(barList.size());
             }
 
         } else {//load data butonuna tıklanınca
@@ -94,21 +106,13 @@ public class MainController implements Initializable {
         System.out.println(animationType + " yapılacak");
         if(animationType.equals("Bar Chart")){
 
-            for(DataModel model : dataModelList){
-                System.out.println(model.toString());
-            }
-            System.out.println("Bunlarla grafik çizdirilecek");
-            System.out.println(dataModelList.size());
-
-
-
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("sample/view/BarChartScene.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/BarChartScene.fxml"));
                 Parent root = loader.load();
 
                 BarChartSceneController barChartSceneController = loader.getController();
 
-                barChartSceneController.setDataModelList(dataModelList);
+                barChartSceneController.setBarChart(barChart);
                 barChartSceneController.setChartTitle(chartTitle);
                 barChartSceneController.setxLabel(xLabel);
 
@@ -138,7 +142,7 @@ public class MainController implements Initializable {
 
             //tüm nodları gez
             for (int i = 0; i < recordList.getLength(); i++) {
-                DataModel model = new DataModel();
+                Bar bar = new Bar();
                 Node r = recordList.item(i); //her bir recordList elemanını
                 if (r.getNodeType() == Node.ELEMENT_NODE) { //her node bir element ise
                     Element record = (Element) r;        //node'u record elementine at
@@ -149,31 +153,31 @@ public class MainController implements Initializable {
                         Node n = nameList.item(j);
                         if (n.getNodeType() == Node.ELEMENT_NODE) {
 
+
                             if(!((Element) n).getAttribute("key").equals("")){
-                                model.setKey(((Element) n).getAttribute("key"));
+                                bar.setKey(((Element) n).getAttribute("key"));
                             }
                             if (((Element) n).getAttribute("name").equals("Name")) {
-                                model.setName(n.getTextContent());
+                                bar.setName(n.getTextContent());
                             }
                             if (((Element) n).getAttribute("name").equals("Country")) {
-                                model.setCountry(n.getTextContent());
+                                bar.setCountry(n.getTextContent());
                             }
                             if (((Element) n).getAttribute("name").equals("Year")) {
-                                model.setYear(Integer.parseInt(n.getTextContent()));
+                                bar.setYear(Integer.parseInt(n.getTextContent()));
                             }
                             if (((Element) n).getAttribute("name").equals("Value")) {
-                                model.setValue(Double.parseDouble(n.getTextContent()));
+                                bar.setValue(Double.parseDouble(n.getTextContent()));
                             }
                             if (((Element) n).getAttribute("name").equals("Category")) {
-                                model.setCategory(n.getTextContent());
+                                bar.setCategory(n.getTextContent());
                             }
 
                         }
                     }
-
                 }
 
-                dataModelList.add(model);
+                barList.add(bar);
             }
 
         } catch (ParserConfigurationException e) {
@@ -220,7 +224,4 @@ public class MainController implements Initializable {
 
     }
 
-    public List<DataModel> getDataModelList() {
-        return dataModelList;
-    }
 }
