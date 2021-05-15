@@ -3,13 +3,13 @@ package sample;
 public class Bar implements Comparable<Bar>{
 
     private String key, name, category, country;
-    private double value;
+    private int value;
     private int year;
 
     public Bar() {
     }
 
-    public Bar(String key, String name, String category, String country, double value, int year) {
+    public Bar(String key, String name, String category, String country, int value, int year) {
         this.key = key;
         this.name = name;
         this.category = category;
@@ -51,11 +51,11 @@ public class Bar implements Comparable<Bar>{
         this.country = country;
     }
 
-    public double getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(int value) {
         this.value = value;
     }
 

@@ -3,20 +3,20 @@ package sample;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BarChart extends Chart {
+public class BarChartModel extends Chart {
 
     List<Bar> barList = new ArrayList<>();
     private String title, xAxisLabel;
 
-    public BarChart() {
+    public BarChartModel() {
         super("","");
     }
 
-    public BarChart(String title, String xAxisLabel) {
+    public BarChartModel(String title, String xAxisLabel) {
         super(title, xAxisLabel);
     }
 
-    public BarChart(List<Bar> barList, String title, String xAxisLabel) {
+    public BarChartModel(List<Bar> barList, String title, String xAxisLabel) {
         super(title, xAxisLabel);
         this.barList = barList;
         this.title=title;

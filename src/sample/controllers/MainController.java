@@ -20,8 +20,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import sample.Bar;
-import sample.BarChart;
-import sample.model.DataModel;
+import sample.BarChartModel;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -47,7 +46,7 @@ public class MainController implements Initializable {
     private TextField textFieldUrl;
     List<Bar> barList = new ArrayList<>();
     String chartTitle,xLabel;
-    BarChart barChart;
+    BarChartModel barChartModel;
 
 
     @Override
@@ -83,10 +82,10 @@ public class MainController implements Initializable {
                 comboBoxAnimationType.setVisible(true);
                 parseLocalXMLToObject(String.valueOf(file.toURI()));//verilen dosyayı parse et
 
-                barChart = new BarChart(barList,chartTitle,xLabel); //eklenen verilerle barChart objesi oluştur
+                barChartModel = new BarChartModel(barList,chartTitle,xLabel); //eklenen verilerle barChart objesi oluştur
 
                 //TESTING
-                for(Bar barModel : barChart.getBarList()){
+                for(Bar barModel : barChartModel.getBarList()){
                     System.out.println(barModel.toString());
                 }
                 System.out.println("Bunlarla grafik çizdirilecek");
@@ -112,9 +111,7 @@ public class MainController implements Initializable {
 
                 BarChartSceneController barChartSceneController = loader.getController();
 
-                barChartSceneController.setBarChart(barChart);
-                barChartSceneController.setChartTitle(chartTitle);
-                barChartSceneController.setxLabel(xLabel);
+                barChartSceneController.setBarChart(barChartModel);
 
                 Stage stage = new Stage();
                 stage.setTitle("Bar Chart");
@@ -167,7 +164,7 @@ public class MainController implements Initializable {
                                 bar.setYear(Integer.parseInt(n.getTextContent()));
                             }
                             if (((Element) n).getAttribute("name").equals("Value")) {
-                                bar.setValue(Double.parseDouble(n.getTextContent()));
+                                bar.setValue(Integer.parseInt(n.getTextContent()));
                             }
                             if (((Element) n).getAttribute("name").equals("Category")) {
                                 bar.setCategory(n.getTextContent());
@@ -176,7 +173,6 @@ public class MainController implements Initializable {
                         }
                     }
                 }
-
                 barList.add(bar);
             }
 
