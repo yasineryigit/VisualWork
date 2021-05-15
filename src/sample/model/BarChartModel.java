@@ -1,4 +1,7 @@
-package sample;
+package sample.model;
+
+import sample.Bar;
+import sample.Chart;
 
 import java.util.ArrayList;
 import java.util.List;

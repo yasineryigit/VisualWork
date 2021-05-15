@@ -1,8 +1,10 @@
-package sample;
+package sample.model;
 
-public class LineChart extends Chart {
+import sample.Chart;
 
-    public LineChart(String title, String xAxisLabel) {
+public class LineChartModel extends Chart {
+
+    public LineChartModel(String title, String xAxisLabel) {
         super(title, xAxisLabel);
     }
 
