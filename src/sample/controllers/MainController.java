@@ -4,12 +4,16 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -27,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class MainController implements Initializable {
 
     @FXML
     private Label labelPath;
@@ -36,7 +40,7 @@ public class Controller implements Initializable {
     @FXML
     private ComboBox<String> comboBoxDataSource;
     @FXML
-    private ComboBox comboBoxAnimationType;
+    private ComboBox<String> comboBoxAnimationType;
     @FXML
     private TextField textFieldUrl;
     List<DataModel> dataModelList = new ArrayList<>();
@@ -73,7 +77,7 @@ public class Controller implements Initializable {
                 labelPath.setText(file.getPath());
                 buttonStartAnimation.setVisible(true);
                 comboBoxAnimationType.setVisible(true);
-
+                parseLocalXMLToObject(String.valueOf(file.toURI()));//verilen dosyayı parse et
 
             }
 
@@ -85,18 +89,45 @@ public class Controller implements Initializable {
 
     }
 
-    public void startAnimationScene(ActionEvent e) {
+    public void startAnimationScene(ActionEvent event) throws Exception{
         String animationType = (String) comboBoxAnimationType.getValue();
         System.out.println(animationType + " yapılacak");
         if(animationType.equals("Bar Chart")){
-            //sceneyi aç. TODO
 
+            for(DataModel model : dataModelList){
+                System.out.println(model.toString());
+            }
+            System.out.println("Bunlarla grafik çizdirilecek");
+            System.out.println(dataModelList.size());
+
+
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("sample/view/BarChartScene.fxml"));
+                Parent root = loader.load();
+
+                BarChartSceneController barChartSceneController = loader.getController();
+
+                barChartSceneController.setDataModelList(dataModelList);
+                barChartSceneController.setChartTitle(chartTitle);
+                barChartSceneController.setxLabel(xLabel);
+
+                Stage stage = new Stage();
+                stage.setTitle("Bar Chart");
+                stage.setScene(new Scene(root));
+                stage.show();
+                // Hide this current window (if this is what you want)
+                //((Node)(event.getSource())).getScene().getWindow().hide();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
 
 
-    private List<DataModel> parseLocalXMLToObject(String uri) {
+    private void parseLocalXMLToObject(String uri) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -152,7 +183,6 @@ public class Controller implements Initializable {
         } catch (SAXException e) {
             e.printStackTrace();
         }
-        return dataModelList;
     }
 
 
@@ -190,4 +220,7 @@ public class Controller implements Initializable {
 
     }
 
+    public List<DataModel> getDataModelList() {
+        return dataModelList;
+    }
 }
