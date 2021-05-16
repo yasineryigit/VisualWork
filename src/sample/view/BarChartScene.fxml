@@ -11,14 +11,14 @@
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.BarChartSceneController">
    <children>
       <Button fx:id="startButton" layoutX="210.0" layoutY="522.0" mnemonicParsing="false" onAction="#startAnimation" prefHeight="34.0" prefWidth="98.0" text="START" />
-      <Button layoutX="350.0" layoutY="522.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="98.0" text="STOP" />
-      <Button layoutX="491.0" layoutY="522.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="98.0" text="RELOAD" />
+      <Button layoutX="350.0" layoutY="522.0" mnemonicParsing="false" onAction="#stop" prefHeight="34.0" prefWidth="98.0" text="STOP" />
+      <Button layoutX="491.0" layoutY="522.0" mnemonicParsing="false" onAction="#reload" prefHeight="34.0" prefWidth="98.0" text="RELOAD" />
       <Label fx:id="labelTitle" alignment="CENTER" layoutX="6.0" layoutY="556.0" prefHeight="34.0" prefWidth="778.0">
          <font>
             <Font size="21.0" />
          </font>
       </Label>
-      <BarChart fx:id="barGraphic" animated="false" layoutX="9.0" layoutY="7.0" prefHeight="494.0" prefWidth="790.0">
+      <BarChart fx:id="barGraphic" animated="false" focusTraversable="true" layoutX="9.0" layoutY="7.0" prefHeight="494.0" prefWidth="790.0">
         <xAxis>
           <CategoryAxis fx:id="categoryAxis" side="BOTTOM" />
         </xAxis>

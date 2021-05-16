@@ -3,22 +3,29 @@ package sample.controllers;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import sample.Bar;
 import sample.model.BarChartModel;
 
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Comparator;
@@ -37,23 +44,24 @@ public class BarChartSceneController implements Initializable {
     private NumberAxis numberAxis;
     @FXML
     private Label labelTitle;
+    @FXML
+    private Button startButton;
+
+
     XYChart.Series<String, Integer> series = new XYChart.Series<>();
     int i = 1;
     Timeline tl = new Timeline();
 
     private ObservableList<String> countries = FXCollections.observableArrayList();
     private ObservableList<Integer> values = FXCollections.observableArrayList();
-    private ObservableList<String> years = FXCollections.observableArrayList();
 
 
     public void drawGraphic(BarChartModel barChartModel) {
+        barGraphic.getData().add(series);//seriyi grafiğe bağladık
         //labelTitle.setText(barChartModel.getTitle());
         for (Bar bar : barChartModel.getBarList()) {//seride kullanmak üzere countries, values, years listelerini doldurur
             countries.add(bar.getCountry());
             values.add(bar.getValue());
-            years.add(String.valueOf(bar.getYear()));
-
-            //barGraphic.setTitle(String.valueOf(bar.getYear()));//yılı yazdır
         }
         /*
         for (int i = 0; i < barChartModel.getBarList().size(); i++) {//seriyi doldur
@@ -64,14 +72,18 @@ public class BarChartSceneController implements Initializable {
         tl.getKeyFrames().add(
                 new KeyFrame(Duration.millis(10),//100ms'de bir
                         new EventHandler<ActionEvent>() {
-                            @Override public void handle(ActionEvent actionEvent) {
-                                if(i<barChartModel.getBarList().size()){
-                                    barGraphic.setTitle(String.valueOf(barChartModel.getBarList().get(i).getYear()));
-                                    series.getData().add(new XYChart.Data<>(countries.get(i), values.get(i)));
-                                    barGraphic.getData().add(series);//seriyi grafiğe bağladık
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+                                if (i < barChartModel.getBarList().size()) {
+                                    barGraphic.setTitle(String.valueOf(barChartModel.getBarList().get(i).getYear()));//yılı yazdırır
+                                    XYChart.Data<String, Integer> data = new XYChart.Data<>(countries.get(i), values.get(i));
+                                    series.getData().add(data);
+
+                                    //displayLabelForData(data);//Her bir veri için textini üstünde gösterme denemesi
                                     i++;
-                                }else{
-                                    //timeline'ı durdur TODO
+                                } else {
+                                    tl.stop();//hepsini çizince timeline'ı durdur
+                                    System.out.println("Time line stopped");
                                 }
 
 
@@ -82,6 +94,34 @@ public class BarChartSceneController implements Initializable {
         tl.setAutoReverse(true);
         tl.play();
 
+    }
+
+    private void displayLabelForData(XYChart.Data<String, Integer> data) {
+        final Node node = data.getNode();
+        final Text dataText = new Text(data.getYValue() + "");
+        node.parentProperty().addListener(new ChangeListener<Parent>() {
+            @Override
+            public void changed(ObservableValue<? extends Parent> ov, Parent oldParent, Parent parent) {
+                Group parentGroup = (Group) parent;
+                parentGroup.getChildren().add(dataText);
+            }
+        });
+
+        node.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
+            @Override
+            public void changed(ObservableValue<? extends Bounds> ov, Bounds oldBounds, Bounds bounds) {
+                dataText.setLayoutX(
+                        Math.round(
+                                bounds.getMinX() + bounds.getWidth() / 2 - dataText.prefWidth(-1) / 2
+                        )
+                );
+                dataText.setLayoutY(
+                        Math.round(
+                                bounds.getMinY() - dataText.prefHeight(-1) * 0.5
+                        )
+                );
+            }
+        });
     }
 
     private void sortByYear(List<Bar> barList) {
@@ -97,7 +137,7 @@ public class BarChartSceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        startButton.setDisable(false);
 
     }
 
@@ -114,8 +154,20 @@ public class BarChartSceneController implements Initializable {
         System.out.println("xLabel: " + barChartModel.getxAxisLabel());
         System.out.println("Size: " + barChartModel.getBarList().size());
         */
+        startButton.setDisable(true);
         sortByYear(barChartModel.getBarList());//listeyi yıla göre sırala
         drawGraphic(barChartModel);
+
+    }
+
+    public void stop(ActionEvent e) {
+        //TODO
+        startButton.setDisable(false);
+        tl.stop();
+    }
+
+    public void reload(ActionEvent e) {
+        //TODO
 
     }
 
