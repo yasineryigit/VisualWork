@@ -8,10 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.w3c.dom.Document;
@@ -100,30 +97,48 @@ public class MainController implements Initializable {
 
     }
 
-    public void startAnimationScene(ActionEvent event) throws Exception{
-        String animationType = (String) comboBoxAnimationType.getValue();
-        System.out.println(animationType + " yapılacak");
-        if(animationType.equals("Bar Chart")){
+    public void startAnimationScene(ActionEvent event) {
+        String animationType = comboBoxAnimationType.getValue();
 
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/BarChartScene.fxml"));
-                Parent root = loader.load();
 
-                BarChartSceneController barChartSceneController = loader.getController();
+        if(!comboBoxAnimationType.getSelectionModel().isEmpty()){//comboBoxAnimationType'dan bir seçim yapıldıysa
+            if(animationType.equals("Bar Chart")){
 
-                barChartSceneController.setBarChart(barChartModel);
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/BarChartScene.fxml"));
+                    Parent root = loader.load();
 
-                Stage stage = new Stage();
-                stage.setTitle("Bar Chart");
-                stage.setScene(new Scene(root));
-                stage.show();
-                // Hide this current window (if this is what you want)
-                //((Node)(event.getSource())).getScene().getWindow().hide();
+                    BarChartSceneController barChartSceneController = loader.getController();
+
+                    barChartSceneController.setBarChart(barChartModel);// BarSceneController'a barChartModel'i gönderdik
+
+                    Stage stage = new Stage();
+                    stage.setTitle("Bar Chart");
+                    stage.setScene(new Scene(root));
+                    stage.show();//BarChartScene'i aç
+                    // Hide this current window (if this is what you want)
+                    //((Node)(event.getSource())).getScene().getWindow().hide();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if(animationType.equals("Line Chart")){
+                /*
+                 * TODO
+                 * Line chart senaryonu açılacak
+                 * */
             }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+
+        }else{//bir seçim yppılmadıysa uyarı göster
+
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("You need to select an animation type");
+            alert.setContentText("Please select an animation type for start animation");
+            alert.showAndWait();
         }
+
+
 
     }
 

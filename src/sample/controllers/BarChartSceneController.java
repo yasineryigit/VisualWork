@@ -57,7 +57,10 @@ public class BarChartSceneController implements Initializable {
 
 
     public void drawGraphic(BarChartModel barChartModel) {
-        barGraphic.getData().add(series);//seriyi grafiğe bağladık
+        barGraphic.getData().add(series);//seri ile grafiği birbirine bağladık
+        countries.clear();
+        values.clear();
+
         //labelTitle.setText(barChartModel.getTitle());
         for (Bar bar : barChartModel.getBarList()) {//seride kullanmak üzere countries, values, years listelerini doldurur
             countries.add(bar.getCountry());
@@ -163,7 +166,7 @@ public class BarChartSceneController implements Initializable {
     public void stop(ActionEvent e) {
         //TODO
         startButton.setDisable(false);
-        tl.stop();
+        tl.pause();
     }
 
     public void reload(ActionEvent e) {
