@@ -1,5 +1,6 @@
 package sample.controllers;
 
+import com.sun.security.jgss.GSSUtil;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,11 +24,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
 
 public class MainController implements Initializable {
 
@@ -42,7 +45,7 @@ public class MainController implements Initializable {
     @FXML
     private TextField textFieldUrl;
     List<Bar> barList = new ArrayList<>();
-    String chartTitle,xLabel;
+    String chartTitle, xLabel;
     BarChartModel barChartModel;
 
 
@@ -59,7 +62,8 @@ public class MainController implements Initializable {
     }
 
 
-    public void selectFile(ActionEvent e) {//Buton adı "Select File" ise dosya yolu ile parse metodu çağır, "Load Data" ise girilen url ile parse metodu çağır.
+    public void selectFile(ActionEvent e) throws FileNotFoundException, ParseException {//Buton adı "Select File" ise dosya yolu ile parse metodu çağır, "Load Data" ise girilen url ile parse metodu çağır.
+        barList.clear();
 
         if (buttonSelect.getText().equals("Select File")) {//select file butonuna tıklanınca
 
@@ -77,16 +81,30 @@ public class MainController implements Initializable {
                 labelPath.setText(file.getPath());
                 buttonStartAnimation.setVisible(true);
                 comboBoxAnimationType.setVisible(true);
-                parseLocalXMLToObject(String.valueOf(file.toURI()));//verilen dosyayı parse et
 
-                barChartModel = new BarChartModel(barList,chartTitle,xLabel); //eklenen verilerle barChart objesi oluştur
+                String extension = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
+                System.out.println("Extension: " + extension);
 
+                if (extension.equals(".xml")) {//xml uzantılıysa
+                    System.out.println("xml uzantılı");
+                    parseLocalXMLToObject(String.valueOf(file.toURI()));//verilen dosyayı parse et
+
+                } else if (extension.equals(".txt")) {//txt uzantılıysa
+                    parseLocalTXTToObject(file);
+
+                } else {//Belirsiz dosya türüyse
+                    System.out.println("Belirsiz uzantılı");
+                    //TODO Alert gösterilebilir
+                }
+                barChartModel = new BarChartModel(barList, chartTitle, xLabel); //eklenen verilerle barChart objesi oluştur
+                /*
                 //TESTING
-                for(Bar barModel : barChartModel.getBarList()){
+                for (Bar barModel : barChartModel.getBarList()) {
                     System.out.println(barModel.toString());
                 }
                 System.out.println("Bunlarla grafik çizdirilecek");
-                System.out.println(barList.size());
+                System.out.println(barList.size());*/
+
             }
 
         } else {//load data butonuna tıklanınca
@@ -97,51 +115,31 @@ public class MainController implements Initializable {
 
     }
 
-    public void startAnimationScene(ActionEvent event) {
-        String animationType = comboBoxAnimationType.getValue();
+    //TODO gelen verilerle (localDate, name, value..) bar objesi oluşturulacak ve barList'e eklenecek
+    private void parseLocalTXTToObject(File file) throws FileNotFoundException, ParseException {
+        Scanner scanTxtFile = new Scanner(file);
 
+        while (scanTxtFile.hasNextLine()) {
 
-        if(!comboBoxAnimationType.getSelectionModel().isEmpty()){//comboBoxAnimationType'dan bir seçim yapıldıysa
-            if(animationType.equals("Bar Chart")){
+            if ((scanTxtFile.nextLine().indexOf(',')) != -1) { // Sadece dataları almak için yapılan işlem. Burada satırımızda virgül yoksa o satır atlanıyor.
+                Bar bar = new Bar();
+                String[] splitTxtFile = scanTxtFile.nextLine().split(","); // Satırdaki verileri virgüllere göre parçalıyor.
 
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/BarChartScene.fxml"));
-                    Parent root = loader.load();
+                LocalDate date = LocalDate.of(Integer.parseInt(splitTxtFile[0].toString()), 1, 1);
+                System.out.println("Date: " + date);
 
-                    BarChartSceneController barChartSceneController = loader.getController();
+                bar.setLocalDate(date);
+                bar.setName(splitTxtFile[1]);
+                bar.setCountry(splitTxtFile[2]);
+                bar.setValue(Integer.parseInt(splitTxtFile[3]));
+                bar.setCategory(splitTxtFile[4]);
+                barList.add(bar);
 
-                    barChartSceneController.setBarChart(barChartModel);// BarSceneController'a barChartModel'i gönderdik
-
-                    Stage stage = new Stage();
-                    stage.setTitle("Bar Chart");
-                    stage.setScene(new Scene(root));
-                    stage.show();//BarChartScene'i aç
-                    // Hide this current window (if this is what you want)
-                    //((Node)(event.getSource())).getScene().getWindow().hide();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else if(animationType.equals("Line Chart")){
-                /*
-                 * TODO
-                 * Line chart senaryonu açılacak
-                 * */
             }
-
-        }else{//bir seçim yppılmadıysa uyarı göster
-
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Warning");
-            alert.setHeaderText("You need to select an animation type");
-            alert.setContentText("Please select an animation type for start animation");
-            alert.showAndWait();
         }
 
 
-
     }
-
 
     private void parseLocalXMLToObject(String uri) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -149,7 +147,7 @@ public class MainController implements Initializable {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(uri);//dokümanı tanımladık
             NodeList recordList = doc.getElementsByTagName("record");//record tagiyle tutulan tüm elemanları recordList'e at
-            chartTitle=doc.getElementsByTagName("title").item(0).getTextContent();
+            chartTitle = doc.getElementsByTagName("title").item(0).getTextContent();
             xLabel = doc.getElementsByTagName("xlabel").item(0).getTextContent();
 
             //tüm nodları gez
@@ -166,7 +164,7 @@ public class MainController implements Initializable {
                         if (n.getNodeType() == Node.ELEMENT_NODE) {
 
 
-                            if(!((Element) n).getAttribute("key").equals("")){
+                            if (!((Element) n).getAttribute("key").equals("")) {
                                 bar.setKey(((Element) n).getAttribute("key"));
                             }
                             if (((Element) n).getAttribute("name").equals("Name")) {
@@ -176,7 +174,8 @@ public class MainController implements Initializable {
                                 bar.setCountry(n.getTextContent());
                             }
                             if (((Element) n).getAttribute("name").equals("Year")) {
-                                bar.setYear(Integer.parseInt(n.getTextContent()));
+                                LocalDate date = LocalDate.of(Integer.parseInt(n.getTextContent()), 1, 1);
+                                bar.setLocalDate(date);
                             }
                             if (((Element) n).getAttribute("name").equals("Value")) {
                                 bar.setValue(Integer.parseInt(n.getTextContent()));
@@ -195,6 +194,52 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    public void startAnimationScene(ActionEvent event) {
+        String animationType = comboBoxAnimationType.getValue();
+
+
+        if (!comboBoxAnimationType.getSelectionModel().isEmpty()) {//comboBoxAnimationType'dan bir seçim yapıldıysa
+            if (animationType.equals("Bar Chart")) {
+
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/BarChartScene.fxml"));
+                    Parent root = loader.load();
+
+                    BarChartSceneController barChartSceneController = loader.getController();
+
+                    barChartSceneController.setBarChart(barChartModel);// BarSceneController'a barChartModel'i gönderdik
+
+                    Stage stage = new Stage();
+                    stage.setTitle("Bar Chart");
+                    stage.setScene(new Scene(root));
+                    stage.show();//BarChartScene'i aç
+
+
+                    // Hide this current window (if this is what you want)
+                    //((Node)(event.getSource())).getScene().getWindow().hide();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (animationType.equals("Line Chart")) {
+                /*
+                 * TODO
+                 * Line chart senaryonu açılacak
+                 * */
+            }
+
+        } else {//bir seçim yppılmadıysa uyarı göster
+
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("You need to select an animation type");
+            alert.setContentText("Please select an animation type for start animation");
+            alert.showAndWait();
+        }
+
+
+    }
+
 
 
 

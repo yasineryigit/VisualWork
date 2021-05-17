@@ -1,23 +1,24 @@
 package sample;
 
+import java.time.LocalDate;
+
 public class Bar implements Comparable<Bar>{
 
     private String key, name, category, country;
     private int value;
-    private int year;
+    private LocalDate localDate;
 
     public Bar() {
     }
 
-    public Bar(String key, String name, String category, String country, int value, int year) {
+    public Bar(String key, String name, String category, String country, int value, LocalDate localDate) {
         this.key = key;
         this.name = name;
         this.category = category;
         this.country = country;
         this.value = value;
-        this.year = year;
+        this.localDate = localDate;
     }
-
 
     public String getKey() {
         return key;
@@ -59,15 +60,13 @@ public class Bar implements Comparable<Bar>{
         this.value = value;
     }
 
-    public int getYear() {
-        return year;
+    public LocalDate getLocalDate() {
+        return localDate;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setLocalDate(LocalDate localDate) {
+        this.localDate = localDate;
     }
-
-
 
     @Override
     public int compareTo(Bar o) {//2 barı değerlerine göre karşılaştırır
@@ -82,7 +81,7 @@ public class Bar implements Comparable<Bar>{
                 ", category='" + category + '\'' +
                 ", country='" + country + '\'' +
                 ", value=" + value +
-                ", year=" + year +
+                ", localDateYear=" + localDate +
                 '}';
     }
 }

@@ -3,6 +3,7 @@ package sample.controllers;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -51,25 +52,19 @@ public class BarChartSceneController implements Initializable {
     XYChart.Series<String, Integer> series = new XYChart.Series<>();
     int i = 1;
     Timeline tl = new Timeline();
-
-    private ObservableList<String> countries = FXCollections.observableArrayList();
-    private ObservableList<Integer> values = FXCollections.observableArrayList();
+    ObservableList<String> names = FXCollections.observableArrayList();
+    ObservableList<Integer> values = FXCollections.observableArrayList();
 
 
     public void drawGraphic(BarChartModel barChartModel) {
         barGraphic.getData().add(series);//seri ile grafiği birbirine bağladık
-        countries.clear();
-        values.clear();
+
 
         //labelTitle.setText(barChartModel.getTitle());
         for (Bar bar : barChartModel.getBarList()) {//seride kullanmak üzere countries, values, years listelerini doldurur
-            countries.add(bar.getCountry());
+            names.add(bar.getName());
             values.add(bar.getValue());
         }
-        /*
-        for (int i = 0; i < barChartModel.getBarList().size(); i++) {//seriyi doldur
-
-        }*/
 
 
         tl.getKeyFrames().add(
@@ -78,8 +73,19 @@ public class BarChartSceneController implements Initializable {
                             @Override
                             public void handle(ActionEvent actionEvent) {
                                 if (i < barChartModel.getBarList().size()) {
-                                    barGraphic.setTitle(String.valueOf(barChartModel.getBarList().get(i).getYear()));//yılı yazdırır
-                                    XYChart.Data<String, Integer> data = new XYChart.Data<>(countries.get(i), values.get(i));
+                                    barGraphic.setTitle(String.valueOf(barChartModel.getBarList().get(i).getLocalDate().getYear()));//yılı yazdırır
+                                    XYChart.Data<String, Integer> data = new XYChart.Data<>(names.get(i), values.get(i));
+                                    //text testing
+                                   /* data.nodeProperty().addListener(new ChangeListener<Node>() {
+                                        @Override public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                                            if (node != null) {
+                                                //setNodeStyle(data);
+                                                displayLabelForData(data);
+                                            }
+                                        }
+                                    });*/
+                                    //text testing
+                                    series.setName("Value");
                                     series.getData().add(data);
 
                                     //displayLabelForData(data);//Her bir veri için textini üstünde gösterme denemesi
@@ -88,15 +94,24 @@ public class BarChartSceneController implements Initializable {
                                     tl.stop();//hepsini çizince timeline'ı durdur
                                     System.out.println("Time line stopped");
                                 }
-
-
                             }
                         }
                 ));
         tl.setCycleCount(Animation.INDEFINITE);
         tl.setAutoReverse(true);
         tl.play();
+    }
 
+
+    private void setNodeStyle(XYChart.Data<String, Integer> data) {
+        Node node = data.getNode();
+        if (data.getYValue().intValue() > 8) {
+            node.setStyle("-fx-bar-fill: -fx-exceeded;");
+        } else if (data.getYValue().intValue() > 5) {
+            node.setStyle("-fx-bar-fill: -fx-achieved;");
+        } else {
+            node.setStyle("-fx-bar-fill: -fx-not-achieved;");
+        }
     }
 
     private void displayLabelForData(XYChart.Data<String, Integer> data) {
@@ -110,7 +125,7 @@ public class BarChartSceneController implements Initializable {
             }
         });
 
-        node.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
+        node.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {//yazının konumunu ayarlar
             @Override
             public void changed(ObservableValue<? extends Bounds> ov, Bounds oldBounds, Bounds bounds) {
                 dataText.setLayoutX(
@@ -127,20 +142,20 @@ public class BarChartSceneController implements Initializable {
         });
     }
 
-    private void sortByYear(List<Bar> barList) {
+    private void sortByLocalDate(List<Bar> barList) {//listedeki elemanları localDate objesine göre sıralar
         Collections.sort(barList, new Comparator<Bar>() {
             @Override
             public int compare(Bar o1, Bar o2) {
-                return o1.getYear() - (o2.getYear());
+                return o1.getLocalDate().compareTo(o2.getLocalDate());
             }
         });
-
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         startButton.setDisable(false);
+
 
     }
 
@@ -158,7 +173,7 @@ public class BarChartSceneController implements Initializable {
         System.out.println("Size: " + barChartModel.getBarList().size());
         */
         startButton.setDisable(true);
-        sortByYear(barChartModel.getBarList());//listeyi yıla göre sırala
+        sortByLocalDate(barChartModel.getBarList());
         drawGraphic(barChartModel);
 
     }
@@ -177,5 +192,12 @@ public class BarChartSceneController implements Initializable {
 
     public void setBarChart(BarChartModel barChartModel) {
         this.barChartModel = barChartModel;
+    }
+
+    @FXML
+    public void exitApplication(ActionEvent event) {
+        tl.stop();
+        Platform.exit();
+
     }
 }
