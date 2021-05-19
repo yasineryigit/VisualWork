@@ -68,23 +68,14 @@ public class BarChartSceneController implements Initializable {
 
 
         tl.getKeyFrames().add(
-                new KeyFrame(Duration.millis(10),//100ms'de bir
+                new KeyFrame(Duration.millis(10),//10ms'de bir
                         new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
                                 if (i < barChartModel.getBarList().size()) {
                                     barGraphic.setTitle(String.valueOf(barChartModel.getBarList().get(i).getLocalDate().getYear()));//yılı yazdırır
                                     XYChart.Data<String, Integer> data = new XYChart.Data<>(names.get(i), values.get(i));
-                                    //text testing
-                                   /* data.nodeProperty().addListener(new ChangeListener<Node>() {
-                                        @Override public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
-                                            if (node != null) {
-                                                //setNodeStyle(data);
-                                                displayLabelForData(data);
-                                            }
-                                        }
-                                    });*/
-                                    //text testing
+
                                     series.setName("Value");
                                     series.getData().add(data);
 
@@ -102,7 +93,7 @@ public class BarChartSceneController implements Initializable {
         tl.play();
     }
 
-
+    //@TEST bar üstünde değerini yazdırmak için
     private void setNodeStyle(XYChart.Data<String, Integer> data) {
         Node node = data.getNode();
         if (data.getYValue().intValue() > 8) {
@@ -114,6 +105,7 @@ public class BarChartSceneController implements Initializable {
         }
     }
 
+    //@TEST bar üstünde değerini yazdırmak için
     private void displayLabelForData(XYChart.Data<String, Integer> data) {
         final Node node = data.getNode();
         final Text dataText = new Text(data.getYValue() + "");
@@ -142,7 +134,7 @@ public class BarChartSceneController implements Initializable {
         });
     }
 
-    private void sortByLocalDate(List<Bar> barList) {//listedeki elemanları localDate objesine göre sıralar
+    private void sortByLocalDate(List<Bar> barList) {//listedeki elemanları localDate değişkenine göre sıralar
         Collections.sort(barList, new Comparator<Bar>() {
             @Override
             public int compare(Bar o1, Bar o2) {
@@ -154,7 +146,6 @@ public class BarChartSceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        startButton.setDisable(false);
 
 
     }
