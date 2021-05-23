@@ -3,6 +3,7 @@ package sample.controllers;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,6 +28,7 @@ import javafx.util.Duration;
 import sample.Bar;
 import sample.model.BarChartModel;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Stream;
@@ -44,7 +46,7 @@ public class BarChartSceneController implements Initializable {
     @FXML
     private Label labelTitle;
     @FXML
-    private Button startButton;
+    private Button buttonStart, buttonStop, buttonReload;
 
 
     //XYChart.Series<String, Integer>[] series;
@@ -85,20 +87,23 @@ public class BarChartSceneController implements Initializable {
                         new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                if (i < barChartModel.getBarList().size()) {
-                                    barGraphic.setTitle(String.valueOf(barChartModel.getBarList().get(i).getLocalDate().getYear()));//yılı yazdırır
-                                    seriesIndex = namesArray.indexOf(barChartModel.getBarList().get(i).getName());
+                                try {
+                                    if (i < barChartModel.getBarList().size()) {
 
-                                    try {
+                                        barGraphic.setTitle(String.valueOf(barChartModel.getBarList().get(i).getLocalDate().getYear()));//yılı yazdırır
+                                        seriesIndex = namesArray.indexOf(barChartModel.getBarList().get(i).getName());
                                         series[seriesIndex].getData().add(new XYChart.Data<>(names.get(i), values.get(i)));
-                                    } catch (Exception ex) {
-                                        System.out.println(ex.getMessage());
+
+
+                                        i++;
+                                    } else {
+                                        tl.stop();//hepsini çizince timeline'ı durdur
+                                        System.out.println("Time line stopped");
                                     }
-                                    i++;
-                                } else {
-                                    tl.stop();//hepsini çizince timeline'ı durdur
-                                    System.out.println("Time line stopped");
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
                                 }
+
                             }
                         }
                 ));
@@ -106,6 +111,7 @@ public class BarChartSceneController implements Initializable {
         tl.setAutoReverse(true);
         tl.play();
     }
+
 
     //@TEST bar üstünde değerini yazdırmak için
     private void setNodeStyle(XYChart.Data<String, Integer> data) {
@@ -177,19 +183,25 @@ public class BarChartSceneController implements Initializable {
         System.out.println("xLabel: " + barChartModel.getxAxisLabel());
         System.out.println("Size: " + barChartModel.getBarList().size());
         */
-        startButton.setDisable(true);
+        buttonStart.setDisable(true);
         sortByLocalDate(barChartModel.getBarList());
         drawGraphic(barChartModel);
     }
 
 
-    public void stop(ActionEvent e) {
-        //TODO
-        startButton.setDisable(false);
-        tl.pause();
+    public void stopAnimation() {
+        buttonStart.setDisable(true);
+        buttonReload.setDisable(false);
+        if (buttonStop.getText().equals("CONTINUE")) {
+            tl.play();
+            buttonStop.setText("PAUSE");
+        } else {
+            tl.stop();
+            buttonStop.setText("CONTINUE");
+        }
     }
 
-    public void reload(ActionEvent e) {
+    public void reloadAnimation(ActionEvent e) {
         //TODO
 
     }

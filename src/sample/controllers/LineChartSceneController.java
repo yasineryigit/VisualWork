@@ -41,17 +41,11 @@ public class LineChartSceneController implements Initializable {
     private Label labelTitle;
 
     @FXML
-    private Button startButton;
-
-    @FXML
-    private Button stopButton;
-
-    @FXML
-    private Button reloadButton;
+    private Button buttonStart,buttonStop,buttonReload;
 
     //XYChart.Series<String, Integer>[] series = Stream.<XYChart.Series<String, Integer>>generate(XYChart.Series::new).limit(22).toArray(XYChart.Series[]::new);
     Timeline tl = new Timeline();
-    int counter = 0;
+    int i = 0;
     int seriesIndex = 0;
 
     private ObservableList<String> names = FXCollections.observableArrayList();
@@ -106,17 +100,17 @@ public class LineChartSceneController implements Initializable {
                             @Override
                             public void handle(ActionEvent event) {
                                 try {
-                                    if (counter < lineChartModel.getLineList().size()) {
+                                    if (i < lineChartModel.getLineList().size()) {
                                         //lineGraphic.setTitle(String.valueOf(lineChartModel.getLineList().get(i).getYear()));
-                                        seriesIndex = namesArray.indexOf(lineChartModel.getLineList().get(counter).getName());
-                                        series[seriesIndex].getData().add(new XYChart.Data<>(years.get(counter), values.get(counter)));
-                                        counter++;
+                                        seriesIndex = namesArray.indexOf(lineChartModel.getLineList().get(i).getName());
+                                        series[seriesIndex].getData().add(new XYChart.Data<>(years.get(i), values.get(i)));
+                                        i++;
                                     }
                                     else{
                                         tl.stop();
                                     }
-                                }catch (Exception ex) {
-                                    System.out.println(ex.getMessage());
+                                }catch (Exception e) {
+                                    System.out.println(e.getMessage());
                                 }
                             }
                         }
@@ -136,23 +130,23 @@ public class LineChartSceneController implements Initializable {
     }
 
     public void startAnimation() {
-        startButton.setDisable(true);
-        stopButton.setDisable(false);
-        reloadButton.setDisable(false);
+        buttonStart.setDisable(true);
+        buttonStop.setDisable(false);
+        buttonReload.setDisable(false);
         sortByLocalDate(lineChartModel.getLineList());
         drawGraphic(lineChartModel);
     }
 
     public void stopAnimation(){
-        startButton.setDisable(true);
-        reloadButton.setDisable(false);
-        if(stopButton.getText().equals("CONTINUE")){
+        buttonStart.setDisable(true);
+        buttonReload.setDisable(false);
+        if(buttonStop.getText().equals("CONTINUE")){
             tl.play();
-            stopButton.setText("PAUSE");
+            buttonStop.setText("PAUSE");
         }
         else{
             tl.stop();
-            stopButton.setText("CONTINUE");
+            buttonStop.setText("CONTINUE");
         }
     }
 
@@ -180,8 +174,8 @@ public class LineChartSceneController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        stopButton.setDisable(true);
-        reloadButton.setDisable(true);
+        buttonStop.setDisable(true);
+        buttonReload.setDisable(true);
 
 
     }
