@@ -18,7 +18,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import sample.Bar;
+import sample.Line;
 import sample.model.BarChartModel;
+import sample.model.LineChartModel;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -44,9 +46,13 @@ public class MainController implements Initializable {
     private ComboBox<String> comboBoxAnimationType;
     @FXML
     private TextField textFieldUrl;
-    List<Bar> barList = new ArrayList<>();
     String chartTitle, xLabel;
+
     BarChartModel barChartModel;
+    List<Bar> barList = new ArrayList<>();
+
+    LineChartModel lineChartModel;
+    List<Line> lineList = new ArrayList<>();
 
 
     @Override
@@ -63,7 +69,9 @@ public class MainController implements Initializable {
 
 
     public void selectFile(ActionEvent e) throws FileNotFoundException, ParseException {//Buton adı "Select File" ise dosya yolu ile parse metodu çağır, "Load Data" ise girilen url ile parse metodu çağır.
+        //seçme ekranına gittiyse listeleri temizle
         barList.clear();
+        lineList.clear();
 
         if (buttonSelect.getText().equals("Select File")) {//select file butonuna tıklanınca
 
@@ -76,6 +84,7 @@ public class MainController implements Initializable {
                     new FileChooser.ExtensionFilter("TEXT files (*.txt)", "*.txt")
             );
 
+
             File file = fileChooser.showOpenDialog(null);  // Dosya seçme ekranı aç
             if (file != null) {
                 labelPath.setText(file.getPath());
@@ -85,8 +94,8 @@ public class MainController implements Initializable {
                 String extension = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
                 System.out.println("Extension: " + extension);
 
+
                 if (extension.equals(".xml")) {//xml uzantılıysa
-                    System.out.println("xml uzantılı");
                     parseLocalXMLToObject(String.valueOf(file.toURI()));//verilen dosyayı parse et
 
                 } else if (extension.equals(".txt")) {//txt uzantılıysa
@@ -96,7 +105,9 @@ public class MainController implements Initializable {
                     System.out.println("Belirsiz uzantılı");
                     //TODO Alert gösterilebilir
                 }
+
                 barChartModel = new BarChartModel(barList, chartTitle, xLabel); //eklenen verilerle barChart objesi oluştur
+                lineChartModel = new LineChartModel(lineList,chartTitle,xLabel);//eklenen verilerle lineChart objesi oluştur
                 /*
                 //TESTING
                 for (Bar barModel : barChartModel.getBarList()) {
@@ -106,40 +117,47 @@ public class MainController implements Initializable {
                 System.out.println(barList.size());*/
 
             }
-
         } else {//load data butonuna tıklanınca
             System.out.println(textFieldUrl.getText() + " ile parsing'e gitti");
             //parseOnlineXMLToObject(textFieldUrl.getText());/*TODO linkteki xml'e parsing yapma metodu eklenecek*/
 
         }
-
     }
 
     //TODO gelen verilerle (localDate, name, value..) bar objesi oluşturulacak ve barList'e eklenecek
-    private void parseLocalTXTToObject(File file) throws FileNotFoundException, ParseException {
+    private void parseLocalTXTToObject(File file) throws FileNotFoundException {
         Scanner scanTxtFile = new Scanner(file);
 
         while (scanTxtFile.hasNextLine()) {
 
             if ((scanTxtFile.nextLine().indexOf(',')) != -1) { // Sadece dataları almak için yapılan işlem. Burada satırımızda virgül yoksa o satır atlanıyor.
                 Bar bar = new Bar();
+                Line line = new Line();
                 String[] splitTxtFile = scanTxtFile.nextLine().split(","); // Satırdaki verileri virgüllere göre parçalıyor.
 
                 LocalDate date = LocalDate.of(Integer.parseInt(splitTxtFile[0].toString()), 1, 1);
-                System.out.println("Date: " + date);
 
                 bar.setLocalDate(date);
-                bar.setName(splitTxtFile[1]);
-                bar.setCountry(splitTxtFile[2]);
-                bar.setValue(Integer.parseInt(splitTxtFile[3]));
-                bar.setCategory(splitTxtFile[4]);
-                barList.add(bar);
+                line.setLocalDate(date);
 
+                bar.setName(splitTxtFile[1]);
+                line.setName(splitTxtFile[1]);
+
+                bar.setCountry(splitTxtFile[2]);
+                line.setCountry(splitTxtFile[2]);
+
+                bar.setValue(Integer.parseInt(splitTxtFile[3]));
+                line.setValue(Integer.parseInt(splitTxtFile[3]));
+
+                bar.setCategory(splitTxtFile[4]);
+                line.setCategory(splitTxtFile[4]);
+
+                barList.add(bar);
+                lineList.add(line);
             }
         }
-
-
     }
+
 
     private void parseLocalXMLToObject(String uri) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -153,6 +171,7 @@ public class MainController implements Initializable {
             //tüm nodları gez
             for (int i = 0; i < recordList.getLength(); i++) {
                 Bar bar = new Bar();
+                Line line = new Line();
                 Node r = recordList.item(i); //her bir recordList elemanını
                 if (r.getNodeType() == Node.ELEMENT_NODE) { //her node bir element ise
                     Element record = (Element) r;        //node'u record elementine at
@@ -166,34 +185,42 @@ public class MainController implements Initializable {
 
                             if (!((Element) n).getAttribute("key").equals("")) {
                                 bar.setKey(((Element) n).getAttribute("key"));
+                                line.setKey(((Element) n).getAttribute("key"));
                             }
                             if (((Element) n).getAttribute("name").equals("Name")) {
                                 bar.setName(n.getTextContent());
+                                line.setName(n.getTextContent());
                             }
                             if (((Element) n).getAttribute("name").equals("Country")) {
                                 bar.setCountry(n.getTextContent());
+                                line.setCountry(n.getTextContent());
                             }
                             if (((Element) n).getAttribute("name").equals("Year")) {
                                 LocalDate date = LocalDate.of(Integer.parseInt(n.getTextContent()), 1, 1);
                                 bar.setLocalDate(date);
+                                line.setLocalDate(date);
                             }
                             if (((Element) n).getAttribute("name").equals("Value")) {
                                 bar.setValue(Integer.parseInt(n.getTextContent()));
+                                line.setValue(Integer.parseInt(n.getTextContent()));
                             }
                             if (((Element) n).getAttribute("name").equals("Category")) {
                                 bar.setCategory(n.getTextContent());
+                                line.setCategory(n.getTextContent());
                             }
 
                         }
                     }
                 }
                 barList.add(bar);
+                lineList.add(line);
             }
-
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }
     }
+
+
 
     public void startAnimationScene(ActionEvent event) {
         String animationType = comboBoxAnimationType.getValue();
@@ -222,10 +249,26 @@ public class MainController implements Initializable {
                     e.printStackTrace();
                 }
             } else if (animationType.equals("Line Chart")) {
-                /*
-                 * TODO
-                 * Line chart senaryonu açılacak
-                 * */
+                try {
+
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/LineChartScene.fxml"));
+                    Parent root = loader.load();
+
+                    LineChartSceneController lineChartSceneController = loader.getController();
+
+                    lineChartSceneController.setLineChart(lineChartModel);
+
+                    Stage stage = new Stage();
+                    stage.setTitle("Line Chart");
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                    // Hide this current window (if this is what you want)
+                    //((Node)(event.getSource())).getScene().getWindow().hide();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println(e.getMessage());
+                }
+                //  lineList.clear();
             }
 
         } else {//bir seçim yppılmadıysa uyarı göster
