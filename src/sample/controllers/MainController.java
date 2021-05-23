@@ -29,6 +29,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -68,7 +70,7 @@ public class MainController implements Initializable {
     }
 
 
-    public void selectFile(ActionEvent e) throws FileNotFoundException, ParseException {//Buton adı "Select File" ise dosya yolu ile parse metodu çağır, "Load Data" ise girilen url ile parse metodu çağır.
+    public void selectFile(ActionEvent e) throws IOException, ParseException {//Buton adı "Select File" ise dosya yolu ile parse metodu çağır, "Load Data" ise girilen url ile parse metodu çağır.
         //seçme ekranına gittiyse listeleri temizle
         barList.clear();
         lineList.clear();
@@ -125,17 +127,37 @@ public class MainController implements Initializable {
     }
 
     //TODO gelen verilerle (localDate, name, value..) bar objesi oluşturulacak ve barList'e eklenecek
-    private void parseLocalTXTToObject(File file) throws FileNotFoundException {
+    private void parseLocalTXTToObject(File file) throws IOException {
         Scanner scanTxtFile = new Scanner(file);
 
-        while (scanTxtFile.hasNextLine()) {
+        chartTitle = Files.readAllLines(Paths.get(file.toURI())).get(0); // 1. satırdaki cümlemizi "chartTitle" değişkenine atadık.
+        System.out.println("chartTitle: "+chartTitle); // TEST
 
-            if ((scanTxtFile.nextLine().indexOf(',')) != -1) { // Sadece dataları almak için yapılan işlem. Burada satırımızda virgül yoksa o satır atlanıyor.
+        xLabel = Files.readAllLines(Paths.get(file.toURI())).get(1); // 2. satırdaki cümlemizi "xLabel" değişkenine atadık.
+        System.out.println("xLabel: "+xLabel); // TEST
+
+        while(scanTxtFile.hasNextLine()){
+            String nextLine = scanTxtFile.nextLine();
+            if((nextLine.indexOf(',')) != -1){ // Sadece dataları almak için yapılan işlem. Burada satırımızda virgül yoksa o satır atlanıyor.
                 Bar bar = new Bar();
                 Line line = new Line();
-                String[] splitTxtFile = scanTxtFile.nextLine().split(","); // Satırdaki verileri virgüllere göre parçalıyor.
 
-                LocalDate date = LocalDate.of(Integer.parseInt(splitTxtFile[0].toString()), 1, 1);
+                String[] splitTxtFile = nextLine.split(","); // Satırdaki verileri virgüllere göre parçalıyor.
+
+                LocalDate date;
+
+                if(splitTxtFile[0].contains("-")){//brand values için date oluştur
+                    //parçala LocalDate date = LocalDate.of(Integer.parseInt(splitTxtFile[0]), 1, 1);
+                    String [] temp = splitTxtFile[0].split("\\-");
+                    int year = Integer.parseInt(temp[0]);
+                    int month = Integer.parseInt(temp[1]);
+                    int day = Integer.parseInt(temp[2]);
+                    date = LocalDate.of(year,month,day);
+                    //System.out.println("Year: " + year +" Month:"+ month + " Day: "+day);//TEST
+
+                }else{//city pupulation için date oluştur
+                    date = LocalDate.of(Integer.parseInt(splitTxtFile[0]), 1, 1);
+                }
 
                 bar.setLocalDate(date);
                 line.setLocalDate(date);
@@ -146,16 +168,21 @@ public class MainController implements Initializable {
                 bar.setCountry(splitTxtFile[2]);
                 line.setCountry(splitTxtFile[2]);
 
+
                 bar.setValue(Integer.parseInt(splitTxtFile[3]));
                 line.setValue(Integer.parseInt(splitTxtFile[3]));
 
                 bar.setCategory(splitTxtFile[4]);
                 line.setCategory(splitTxtFile[4]);
 
+
                 barList.add(bar);
                 lineList.add(line);
+
             }
         }
+
+
     }
 
 

@@ -53,7 +53,7 @@ public class LineChartSceneController implements Initializable {
     private ObservableList<String> years = FXCollections.observableArrayList();
 
     public void drawGraphic(LineChartModel lineChartModel) {
-        //System.out.println("Gelen obje sayisi: " + lineChartModel.getLineList().size());
+        System.out.println("Gelen obje sayisi: " + lineChartModel.getLineList().size());
         List<String> namesArray = new ArrayList<>();
 
         labelTitle.setText(lineChartModel.getTitle());//title'ı yaz
@@ -62,7 +62,7 @@ public class LineChartSceneController implements Initializable {
         for (Line line : lineChartModel.getLineList()) {
             names.add(line.getCountry());
             values.add(line.getValue());
-            years.add(String.valueOf(line.getLocalDate().getYear()));
+            years.add(String.valueOf(line.getLocalDate()));
 
             if (!namesArray.contains(line.getName())) {
                 namesArray.add(line.getName());

@@ -59,7 +59,7 @@ public class BarChartSceneController implements Initializable {
     ObservableList<Integer> years = FXCollections.observableArrayList();
 
     public void drawGraphic(BarChartModel barChartModel) {
-        //System.out.println("Gelen obje sayisi: " + barChartModel.getBarList().size());
+        System.out.println("Gelen obje sayisi: " + barChartModel.getBarList().size());
         List<String> namesArray = new ArrayList<>();
         labelTitle.setText(barChartModel.getTitle());//title'ı yaz
         barGraphic.getYAxis().setLabel(barChartModel.getxAxisLabel());//axis labeli yaz
@@ -90,7 +90,7 @@ public class BarChartSceneController implements Initializable {
                                 try {
                                     if (i < barChartModel.getBarList().size()) {
 
-                                        barGraphic.setTitle(String.valueOf(barChartModel.getBarList().get(i).getLocalDate().getYear()));//yılı yazdırır
+                                        barGraphic.setTitle(String.valueOf(barChartModel.getBarList().get(i).getLocalDate()));//yılı yazdırır
                                         seriesIndex = namesArray.indexOf(barChartModel.getBarList().get(i).getName());
                                         series[seriesIndex].getData().add(new XYChart.Data<>(names.get(i), values.get(i)));
 
