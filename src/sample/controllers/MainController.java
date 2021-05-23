@@ -1,6 +1,5 @@
 package sample.controllers;
 
-import com.sun.security.jgss.GSSUtil;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,13 +25,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -143,6 +140,7 @@ public class MainController implements Initializable {
                 Line line = new Line();
 
                 String[] splitTxtFile = nextLine.split(","); // Satırdaki verileri virgüllere göre parçalıyor.
+
 
                 LocalDate date;
 

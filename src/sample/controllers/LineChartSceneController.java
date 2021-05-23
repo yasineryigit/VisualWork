@@ -60,10 +60,9 @@ public class LineChartSceneController implements Initializable {
         lineGraphic.getYAxis().setLabel(lineChartModel.getxAxisLabel());//axis labeli yaz
 
         for (Line line : lineChartModel.getLineList()) {
-            names.add(line.getCountry());
+            names.add(line.getName());
             values.add(line.getValue());
             years.add(String.valueOf(line.getLocalDate()));
-
             if (!namesArray.contains(line.getName())) {
                 namesArray.add(line.getName());
             }

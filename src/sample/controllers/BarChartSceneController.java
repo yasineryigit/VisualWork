@@ -3,7 +3,6 @@ package sample.controllers;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -28,7 +27,6 @@ import javafx.util.Duration;
 import sample.Bar;
 import sample.model.BarChartModel;
 
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Stream;

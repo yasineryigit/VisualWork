@@ -8,6 +8,7 @@ public class Bar implements Comparable<Bar>{
     private int value;
     private LocalDate localDate;
 
+
     public Bar() {
     }
 
@@ -69,11 +70,6 @@ public class Bar implements Comparable<Bar>{
     }
 
     @Override
-    public int compareTo(Bar o) {//2 barı değerlerine göre karşılaştırır
-        return 0;
-    }
-
-    @Override
     public String toString() {
         return "Bar{" +
                 "key='" + key + '\'' +
@@ -81,7 +77,12 @@ public class Bar implements Comparable<Bar>{
                 ", category='" + category + '\'' +
                 ", country='" + country + '\'' +
                 ", value=" + value +
-                ", localDateYear=" + localDate +
+                ", date=" + localDate +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Bar o) {
+        return 0;
     }
 }

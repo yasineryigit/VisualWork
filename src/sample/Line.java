@@ -8,7 +8,7 @@ public class Line implements Comparable<Line> {
     private int value;
     private LocalDate localDate;
 
-    public Line(){
+    public Line() {
 
     }
 

@@ -13,7 +13,7 @@
       <Button fx:id="buttonReload" layoutX="678.0" layoutY="678.0" mnemonicParsing="false" onAction="#reload" text="RELOAD" />
       <Button fx:id="buttonStop" layoutX="578.0" layoutY="678.0" mnemonicParsing="false" onAction="#stopAnimation" text="PAUSE" />
       <Button fx:id="buttonStart" layoutX="468.0" layoutY="678.0" mnemonicParsing="false" onAction="#startAnimation" text="START" />
-      <LineChart fx:id="lineGraphic" animated="false" layoutX="28.0" layoutY="14.0" prefHeight="650.0" prefWidth="1150.0">
+      <LineChart fx:id="lineGraphic" animated="false" createSymbols="false" layoutX="28.0" layoutY="14.0" prefHeight="650.0" prefWidth="1150.0">
         <xAxis>
           <CategoryAxis fx:id="categoryAxis" animated="false" prefHeight="35.0" prefWidth="1393.0" side="BOTTOM" />
         </xAxis>
