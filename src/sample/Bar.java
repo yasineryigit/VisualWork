@@ -21,6 +21,8 @@ public class Bar implements Comparable<Bar>{
         this.localDate = localDate;
     }
 
+
+
     public String getKey() {
         return key;
     }

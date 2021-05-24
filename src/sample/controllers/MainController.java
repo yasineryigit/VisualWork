@@ -31,7 +31,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class MainController implements Initializable {
 
@@ -106,7 +109,7 @@ public class MainController implements Initializable {
                 }
 
                 barChartModel = new BarChartModel(barList, chartTitle, xLabel); //eklenen verilerle barChart objesi oluştur
-                lineChartModel = new LineChartModel(lineList,chartTitle,xLabel);//eklenen verilerle lineChart objesi oluştur
+                lineChartModel = new LineChartModel(lineList, chartTitle, xLabel);//eklenen verilerle lineChart objesi oluştur
                 /*
                 //TESTING
                 for (Bar barModel : barChartModel.getBarList()) {
@@ -128,14 +131,14 @@ public class MainController implements Initializable {
         Scanner scanTxtFile = new Scanner(file);
 
         chartTitle = Files.readAllLines(Paths.get(file.toURI())).get(0); // 1. satırdaki cümlemizi "chartTitle" değişkenine atadık.
-        System.out.println("chartTitle: "+chartTitle); // TEST
+        System.out.println("chartTitle: " + chartTitle); // TEST
 
         xLabel = Files.readAllLines(Paths.get(file.toURI())).get(1); // 2. satırdaki cümlemizi "xLabel" değişkenine atadık.
-        System.out.println("xLabel: "+xLabel); // TEST
+        System.out.println("xLabel: " + xLabel); // TEST
 
-        while(scanTxtFile.hasNextLine()){
+        while (scanTxtFile.hasNextLine()) {
             String nextLine = scanTxtFile.nextLine();
-            if((nextLine.indexOf(',')) != -1){ // Sadece dataları almak için yapılan işlem. Burada satırımızda virgül yoksa o satır atlanıyor.
+            if ((nextLine.indexOf(',')) != -1) { // Sadece dataları almak için yapılan işlem. Burada satırımızda virgül yoksa o satır atlanıyor.
                 Bar bar = new Bar();
                 Line line = new Line();
 
@@ -144,16 +147,16 @@ public class MainController implements Initializable {
 
                 LocalDate date;
 
-                if(splitTxtFile[0].contains("-")){//brand values için date oluştur
+                if (splitTxtFile[0].contains("-")) {//brand values için date oluştur
                     //parçala LocalDate date = LocalDate.of(Integer.parseInt(splitTxtFile[0]), 1, 1);
-                    String [] temp = splitTxtFile[0].split("\\-");
+                    String[] temp = splitTxtFile[0].split("\\-");
                     int year = Integer.parseInt(temp[0]);
                     int month = Integer.parseInt(temp[1]);
                     int day = Integer.parseInt(temp[2]);
-                    date = LocalDate.of(year,month,day);
+                    date = LocalDate.of(year, month, day);
                     //System.out.println("Year: " + year +" Month:"+ month + " Day: "+day);//TEST
 
-                }else{//city pupulation için date oluştur
+                } else {//city pupulation için date oluştur
                     date = LocalDate.of(Integer.parseInt(splitTxtFile[0]), 1, 1);
                 }
 
@@ -246,7 +249,6 @@ public class MainController implements Initializable {
     }
 
 
-
     public void startAnimationScene(ActionEvent event) {
         String animationType = comboBoxAnimationType.getValue();
 
@@ -307,8 +309,6 @@ public class MainController implements Initializable {
 
 
     }
-
-
 
 
     private void comboBoxlariHazirla() {

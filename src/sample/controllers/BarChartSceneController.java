@@ -67,6 +67,7 @@ public class BarChartSceneController implements Initializable {
             names.add(bar.getName());
             values.add(bar.getValue());
             years.add((bar.getLocalDate().getYear()));
+
             if (!namesArray.contains(bar.getName())) {
                 namesArray.add(bar.getName());
             }
