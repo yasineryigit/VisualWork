@@ -62,20 +62,22 @@ public class BarChartSceneController implements Initializable {
         labelTitle.setText(barChartModel.getTitle());//title'ı yaz
         barGraphic.getYAxis().setLabel(barChartModel.getxAxisLabel());//axis labeli yaz
 
-        //labelTitle.setText(barChartModel.getTitle());
-        for (Bar bar : barChartModel.getBarList()) {//seride kullanmak üzere countries, values, years listelerini doldurur
+        //seride kullanmak üzere names, values, years listelerini doldurur
+        for (Bar bar : barChartModel.getBarList()) {
             names.add(bar.getName());
             values.add(bar.getValue());
             years.add((bar.getLocalDate().getYear()));
 
-            if (!namesArray.contains(bar.getName())) {
+            if (!namesArray.contains(bar.getName())) {//her bir ismi diziye 1 kez at
                 namesArray.add(bar.getName());
             }
         }
 
+        //Kaç tane name varsa o kadar seri oluştur
         XYChart.Series<String, Integer>[] series = Stream.<XYChart.Series<String, Integer>>generate(XYChart.Series::new).limit(namesArray.size()).toArray(XYChart.Series[]::new);
 
-        for (int i = 0; i < namesArray.size(); i++) {//tüm serileri grafiğe ekledik
+        //barGraphic içine tüm serileri ekle
+        for (int i = 0; i < namesArray.size(); i++) {
             barGraphic.getData().addAll(series[i]);
             //series[i].setName(namesArray.get(i));
         }
@@ -165,7 +167,8 @@ public class BarChartSceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        buttonStop.setDisable(true);
+        buttonReload.setDisable(true);
     }
 
 
@@ -183,6 +186,8 @@ public class BarChartSceneController implements Initializable {
         System.out.println("Size: " + barChartModel.getBarList().size());
         */
         buttonStart.setDisable(true);
+        buttonStop.setDisable(false);
+        buttonReload.setDisable(false);
         sortByLocalDate(barChartModel.getBarList());
         drawGraphic(barChartModel);
     }

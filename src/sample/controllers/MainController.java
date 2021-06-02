@@ -2,13 +2,15 @@ package sample.controllers;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.w3c.dom.Document;
@@ -29,7 +31,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,12 +43,11 @@ public class MainController implements Initializable {
     private Label labelPath;
     @FXML
     private Button buttonSelect, buttonStartAnimation;
-    @FXML
-    private ComboBox<String> comboBoxDataSource;
+
     @FXML
     private ComboBox<String> comboBoxAnimationType;
     @FXML
-    private TextField textFieldUrl;
+
     String chartTitle, xLabel;
 
     BarChartModel barChartModel;
@@ -62,7 +62,7 @@ public class MainController implements Initializable {
         buttonStartAnimation.setVisible(false);
         buttonSelect.setVisible(false);
         comboBoxAnimationType.setVisible(false);
-        textFieldUrl.setVisible(false);
+
 
         comboBoxlariHazirla();
 
@@ -70,7 +70,7 @@ public class MainController implements Initializable {
     }
 
 
-    public void selectFile(ActionEvent e) throws IOException, ParseException {//Buton adı "Select File" ise dosya yolu ile parse metodu çağır, "Load Data" ise girilen url ile parse metodu çağır.
+    public void selectFile(ActionEvent e) throws IOException {//Buton adı "Select File" ise dosya yolu ile parse metodu çağır, "Load Data" ise girilen url ile parse metodu çağır.
         //seçme ekranına gittiyse listeleri temizle
         barList.clear();
         lineList.clear();
@@ -119,10 +119,6 @@ public class MainController implements Initializable {
                 System.out.println(barList.size());*/
 
             }
-        } else {//load data butonuna tıklanınca
-            System.out.println(textFieldUrl.getText() + " ile parsing'e gitti");
-            //parseOnlineXMLToObject(textFieldUrl.getText());/*TODO linkteki xml'e parsing yapma metodu eklenecek*/
-
         }
     }
 
@@ -312,37 +308,15 @@ public class MainController implements Initializable {
 
 
     private void comboBoxlariHazirla() {
-        ObservableList<String> dataSourceMenulist = comboBoxDataSource.getItems();
-        dataSourceMenulist.add("Local Data");
-        dataSourceMenulist.add("Internet URL");
 
         ObservableList<String> animationMenulist = comboBoxAnimationType.getItems();
         animationMenulist.add("Bar Chart");
         animationMenulist.add("Line Chart");
 
+        buttonSelect.setVisible(true);
+        buttonSelect.setText("Select File");
 
-        comboBoxDataSource.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println(comboBoxDataSource.valueProperty().get());
-                if (comboBoxDataSource.valueProperty().get().equals("Local Data")) {
-                    buttonSelect.setVisible(true);
-                    textFieldUrl.setVisible(false);
-                    buttonSelect.setText("Select File");
-                } else {
-                    labelPath.setText("");
-                    textFieldUrl.setVisible(true);
-                    buttonSelect.setVisible(true);
-                    buttonSelect.setText("Load Data");
-                    comboBoxAnimationType.setVisible(true);
-                }
-
-            }
-        });
     } //local veya internet seçeneklerine göre görünümü değiştirir
 
-    public void startAnimationScene() {
-
-    }
 
 }

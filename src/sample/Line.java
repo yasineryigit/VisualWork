@@ -12,7 +12,6 @@ public class Line implements Comparable<Line> {
 
     }
 
-
     public Line(String key, String country, String name, String category, int value, LocalDate localDate) {
         this.key = key;
         this.country = country;
