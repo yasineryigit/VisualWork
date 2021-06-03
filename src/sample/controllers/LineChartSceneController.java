@@ -43,7 +43,7 @@ public class LineChartSceneController implements Initializable {
     private Label labelTitle;
 
     @FXML
-    private Button buttonStart, buttonStop, buttonReload;
+    private Button buttonStart, buttonPause, buttonReload;
 
     Timeline tl = new Timeline();
     int i = 0;
@@ -166,7 +166,7 @@ public class LineChartSceneController implements Initializable {
 
     public void startAnimation() {
         buttonStart.setDisable(true);
-        buttonStop.setDisable(false);
+        buttonPause.setDisable(false);
         buttonReload.setDisable(false);
         sortByLocalDate(lineChartModel.getLineList());
         drawGraphic(lineChartModel);
@@ -175,16 +175,25 @@ public class LineChartSceneController implements Initializable {
     public void stopAnimation() {
         buttonStart.setDisable(true);
         buttonReload.setDisable(false);
-        if (buttonStop.getText().equals("CONTINUE")) {
+        if (buttonPause.getText().equals("CONTINUE")) {
             tl.play();
-            buttonStop.setText("PAUSE");
+            buttonPause.setText("PAUSE");
         } else {
             tl.stop();
-            buttonStop.setText("CONTINUE");
+            buttonPause.setText("CONTINUE");
         }
     }
 
-    public void reload() {
+    public void reloadAnimation(ActionEvent e) {
+        tl.stop();
+        tl.getKeyFrames().clear();
+        i=0;
+        seriesIndex=0;
+        lineGraphic.getData().clear();
+        buttonStart.setDisable(false);
+        buttonReload.setDisable(true);
+        buttonPause.setText("PAUSE");
+        buttonPause.setDisable(true);
     }
 
     public void setLineChart(LineChartModel lineChartModel) {
@@ -193,7 +202,7 @@ public class LineChartSceneController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        buttonStop.setDisable(true);
+        buttonPause.setDisable(true);
         buttonReload.setDisable(true);
     }
 

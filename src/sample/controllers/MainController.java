@@ -263,6 +263,9 @@ public class MainController implements Initializable {
                     Stage stage = new Stage();
                     stage.setTitle("Bar Chart");
                     stage.setScene(new Scene(root));
+                    stage.setMaximized(true);
+                    stage.setMinHeight(466);
+                    stage.setMinWidth(500);
                     stage.show();//BarChartScene'i aç
 
 
@@ -284,6 +287,9 @@ public class MainController implements Initializable {
                     Stage stage = new Stage();
                     stage.setTitle("Line Chart");
                     stage.setScene(new Scene(root));
+                    stage.setMaximized(true);
+                    stage.setMinHeight(466);
+                    stage.setMinWidth(500);
                     stage.show();
                     // Hide this current window (if this is what you want)
                     //((Node)(event.getSource())).getScene().getWindow().hide();

@@ -137,8 +137,15 @@ public class BarChartSceneController implements Initializable {
     }
 
     public void reloadAnimation(ActionEvent e) {
-        //TODO
-
+        tl.stop();
+        tl.getKeyFrames().clear();
+        i=0;
+        seriesIndex=0;
+        barGraphic.getData().clear();
+        buttonStart.setDisable(false);
+        buttonReload.setDisable(true);
+        buttonPause.setText("PAUSE");
+        buttonPause.setDisable(true);
     }
 
 
