@@ -11,7 +11,7 @@
 <AnchorPane prefHeight="630.0" prefWidth="974.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.BarChartSceneController">
    <children>
       <Button fx:id="buttonStart" layoutX="304.0" layoutY="525.0" mnemonicParsing="false" onAction="#startAnimation" prefHeight="34.0" prefWidth="98.0" text="START" />
-      <Button fx:id="buttonStop" layoutX="444.0" layoutY="525.0" mnemonicParsing="false" onAction="#stopAnimation" prefHeight="34.0" prefWidth="98.0" text="STOP" />
+      <Button fx:id="buttonPause" layoutX="444.0" layoutY="525.0" mnemonicParsing="false" onAction="#stopAnimation" prefHeight="34.0" prefWidth="98.0" text="PAUSE" />
       <Button fx:id="buttonReload" layoutX="585.0" layoutY="525.0" mnemonicParsing="false" onAction="#reloadAnimation" prefHeight="34.0" prefWidth="98.0" text="RELOAD" />
       <Label fx:id="labelTitle" alignment="CENTER" layoutY="581.0" prefHeight="34.0" prefWidth="988.0">
          <font>

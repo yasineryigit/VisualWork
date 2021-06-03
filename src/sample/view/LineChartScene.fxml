@@ -8,23 +8,23 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.LineChartSceneController">
-   <children>
-      <Button fx:id="buttonReload" layoutX="678.0" layoutY="678.0" mnemonicParsing="false" onAction="#reload" text="RELOAD" />
-      <Button fx:id="buttonStop" layoutX="578.0" layoutY="678.0" mnemonicParsing="false" onAction="#stopAnimation" text="PAUSE" />
-      <Button fx:id="buttonStart" layoutX="468.0" layoutY="678.0" mnemonicParsing="false" onAction="#startAnimation" text="START" />
-      <LineChart fx:id="lineGraphic" animated="false" createSymbols="false" layoutX="28.0" layoutY="14.0" prefHeight="650.0" prefWidth="1150.0">
-        <xAxis>
-          <CategoryAxis fx:id="categoryAxis" animated="false" prefHeight="35.0" prefWidth="1393.0" side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis fx:id="numberAxis" side="LEFT" style="-fx-view-order: #FFA000;" upperBound="1.4E9" />
-        </yAxis>
-      </LineChart>
-      <Label fx:id="labelTitle" alignment="CENTER" layoutY="711.0" prefHeight="34.0" prefWidth="1200.0">
-         <font>
-            <Font size="21.0" />
-         </font>
-      </Label>
-   </children>
+<AnchorPane prefHeight="850.0" prefWidth="1750.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.LineChartSceneController">
+    <children>
+        <Button fx:id="buttonReload" layoutX="950.0" layoutY="805.0" mnemonicParsing="false" onAction="#reload" text="RELOAD" />
+        <Button fx:id="buttonStop" layoutX="849.0" layoutY="805.0" mnemonicParsing="false" onAction="#stopAnimation" text="PAUSE" />
+        <Button fx:id="buttonStart" layoutX="753.0" layoutY="805.0" mnemonicParsing="false" onAction="#startAnimation" text="START" />
+        <LineChart fx:id="lineGraphic" animated="false" createSymbols="false" layoutX="99.0" layoutY="41.0" prefHeight="750.0" prefWidth="1500.0">
+            <xAxis>
+                <CategoryAxis fx:id="categoryAxis" animated="false" prefHeight="35.0" prefWidth="1393.0" side="BOTTOM" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis fx:id="numberAxis" side="LEFT" style="-fx-view-order: #FFA000;" upperBound="1.4E9" />
+            </yAxis>
+        </LineChart>
+        <Label fx:id="labelTitle" alignment="CENTER" layoutX="249.0" layoutY="8.0" prefHeight="34.0" prefWidth="1200.0">
+            <font>
+                <Font size="21.0" />
+            </font>
+        </Label>
+    </children>
 </AnchorPane>

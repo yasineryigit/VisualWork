@@ -111,6 +111,8 @@ public class LineChartSceneController implements Initializable {
             series[i].setName(namesList.get(j));
         }
 
+
+
         //Drawing without timeline
         /*for(counter = 0 ; counter < lineChartModel.getLineList().size() ; counter++){
             seriesIndex = namesArray.indexOf(lineChartModel.getLineList().get(counter).getCountry());
