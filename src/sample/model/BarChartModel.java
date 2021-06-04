@@ -9,21 +9,18 @@ import java.util.List;
 public class BarChartModel extends Chart {
 
     List<Bar> barList = new ArrayList<>();
-    private String title, xAxisLabel;
+    String title, xAxisLabel;
 
+    //Default constructor
     public BarChartModel() {
-        super("","");
-    }
-
-    public BarChartModel(String title, String xAxisLabel) {
-        super(title, xAxisLabel);
+        super();
     }
 
     public BarChartModel(List<Bar> barList, String title, String xAxisLabel) {
         super(title, xAxisLabel);
         this.barList = barList;
-        this.title=title;
-        this.xAxisLabel=xAxisLabel;
+        this.title = title;
+        this.xAxisLabel = xAxisLabel;
     }
 
     public List<Bar> getBarList() {
@@ -31,21 +28,7 @@ public class BarChartModel extends Chart {
     }
 
 
-    public String getTitle() {
-        return title;
-    }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getxAxisLabel() {
-        return xAxisLabel;
-    }
-
-    public void setxAxisLabel(String xAxisLabel) {
-        this.xAxisLabel = xAxisLabel;
-    }
 
     @Override
     public void setCaption(String caption) {

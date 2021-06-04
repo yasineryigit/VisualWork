@@ -31,25 +31,6 @@ public class LineChartModel extends Chart {
         return lineList;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getxAxisLabel() {
-        return xAxisLabel;
-    }
-
-    public void setLineList(List<Line> lineList) {
-        this.lineList = lineList;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setxAxisLabel(String xAxisLabel) {
-        this.xAxisLabel = xAxisLabel;
-    }
 
     @Override
     public void setCaption(String caption) {

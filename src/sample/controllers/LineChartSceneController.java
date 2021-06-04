@@ -112,25 +112,6 @@ public class LineChartSceneController implements Initializable {
         }
 
 
-
-        //Drawing without timeline
-        /*for(counter = 0 ; counter < lineChartModel.getLineList().size() ; counter++){
-            seriesIndex = namesArray.indexOf(lineChartModel.getLineList().get(counter).getCountry());
-            series[seriesIndex].getData().add(new XYChart.Data<>(years.get(counter),values.get(counter)));
-        }*/
-
-        /*  for (Line line : lineChartModel.getLineList()) {
-            if (counter < lineChartModel.getLineList().size()) {
-                //lineGraphic.setTitle(String.valueOf(lineChartModel.getLineList().get(counter).getYear()));
-                seriesIndex = namesArray.indexOf(lineChartModel.getLineList().get(counter).getCountry());
-                try {
-                    series[seriesIndex].getData().add(new XYChart.Data<>(years.get(counter), values.get(counter)));
-                } catch (Exception ex) {
-                    System.out.println(ex.getMessage());
-                }
-                counter++;
-        }*/
-
         tl.getKeyFrames().add(
                 new KeyFrame(Duration.millis(10),
                         new EventHandler<ActionEvent>() {
