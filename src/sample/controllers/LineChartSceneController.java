@@ -172,7 +172,7 @@ public class LineChartSceneController implements Initializable {
         drawGraphic(lineChartModel);
     }
 
-    public void stopAnimation() {
+    public void pauseAnimation() {
         buttonStart.setDisable(true);
         buttonReload.setDisable(false);
         if (buttonPause.getText().equals("CONTINUE")) {
@@ -194,6 +194,7 @@ public class LineChartSceneController implements Initializable {
         buttonReload.setDisable(true);
         buttonPause.setText("PAUSE");
         buttonPause.setDisable(true);
+        startAnimation();
     }
 
     public void setLineChart(LineChartModel lineChartModel) {

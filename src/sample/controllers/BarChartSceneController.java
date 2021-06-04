@@ -124,7 +124,7 @@ public class BarChartSceneController implements Initializable {
     }
 
 
-    public void stopAnimation() {
+    public void pauseAnimation() {
         buttonStart.setDisable(true);
         buttonReload.setDisable(false);
         if (buttonPause.getText().equals("CONTINUE")) {
@@ -146,6 +146,7 @@ public class BarChartSceneController implements Initializable {
         buttonReload.setDisable(true);
         buttonPause.setText("PAUSE");
         buttonPause.setDisable(true);
+        startAnimation();
     }
 
 
