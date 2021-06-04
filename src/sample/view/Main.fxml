@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="328.0" minWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.MainController">
+<BorderPane minHeight="328.0" minWidth="640.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.MainController">
    <top>
       <Group BorderPane.alignment="CENTER">
          <children>
@@ -43,8 +43,8 @@
                   <Font size="10.0" />
                </font>
             </Label>
-            <ComboBox fx:id="comboBoxAnimationType" layoutX="225.0" layoutY="74.0" prefWidth="150.0" promptText="Animation Type" />
-            <Button fx:id="buttonSelect" alignment="CENTER" layoutX="257.0" layoutY="115.0" mnemonicParsing="false" onAction="#selectFile" prefHeight="31.0" prefWidth="86.0" text="Select" />
+            <ComboBox fx:id="comboBoxAnimationType" layoutX="225.0" layoutY="96.0" prefWidth="150.0" promptText="Animation Type" />
+            <Button fx:id="buttonSelect" alignment="CENTER" layoutX="257.0" layoutY="35.0" mnemonicParsing="false" onAction="#selectFile" prefHeight="31.0" prefWidth="86.0" text="Select" />
          </children>
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
