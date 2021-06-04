@@ -266,12 +266,16 @@ public class MainController implements Initializable {
                     stage.setMaximized(true);
                     stage.setMinHeight(466);
                     stage.setMinWidth(500);
-                    stage.setOnCloseRequest(event1 -> {barChartSceneController.exit();});
+                    stage.setOnCloseRequest(event1 -> {
+                        barChartSceneController.exit();
+                        buttonStartAnimation.setDisable(false);
+                        buttonStartAnimation.setText("Start Animation");
+                    });
                     stage.show();//BarChartScene'i aç
 
+                    buttonStartAnimation.setDisable(true);
+                    buttonStartAnimation.setText("Animation Started..");
 
-                    // Hide this current window (if this is what you want)
-                    //((Node)(event.getSource())).getScene().getWindow().hide();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -291,10 +295,18 @@ public class MainController implements Initializable {
                     stage.setMaximized(true);
                     stage.setMinHeight(466);
                     stage.setMinWidth(500);
-                    stage.setOnCloseRequest(event1 -> {lineChartSceneController.exit();});
+                    stage.setOnCloseRequest(event1 -> {
+                        lineChartSceneController.exit();
+                        buttonStartAnimation.setDisable(false);
+                        buttonStartAnimation.setText("Start Animation");
+
+                    });
                     stage.show();
-                    // Hide this current window (if this is what you want)
-                    //((Node)(event.getSource())).getScene().getWindow().hide();
+
+                    buttonStartAnimation.setDisable(true);
+                    buttonStartAnimation.setText("Animation Started..");
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.out.println(e.getMessage());

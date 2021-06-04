@@ -3,12 +3,14 @@ package sample.controllers;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
@@ -37,10 +39,21 @@ public class BarChartSceneController implements Initializable {
     ObservableList<String> names = FXCollections.observableArrayList();
     ObservableList<Integer> values = FXCollections.observableArrayList();
     ObservableList<Integer> years = FXCollections.observableArrayList();
+    ObservableList<String> categories = FXCollections.observableArrayList();
+
+    public String getRandomRGB() {
+        double r = Math.floor(Math.random() * 255);
+        double g = Math.floor(Math.random() * 255);
+        double b = Math.floor(Math.random() * 255);
+        return r + "," + g + "," + b;
+    }
 
     public void drawGraphic(BarChartModel barChartModel) {
         System.out.println("Gelen obje sayisi: " + barChartModel.getBarList().size());
         List<String> namesList = new ArrayList<>();
+        List<String> categoriesList = new ArrayList<>();
+        List<String> colorRGB = new ArrayList<>();
+        String rgb = "";
         labelTitle.setText(barChartModel.getTitle());//title'ı yaz
         barGraphic.getYAxis().setLabel(barChartModel.getxAxisLabel());//axis labeli yaz
 
@@ -49,9 +62,14 @@ public class BarChartSceneController implements Initializable {
             names.add(bar.getName());
             values.add(bar.getValue());
             years.add((bar.getLocalDate().getYear()));
+            categories.add(bar.getCategory());
 
             if (!namesList.contains(bar.getName())) {//her bir ismi diziye 1 kez at
                 namesList.add(bar.getName());
+            }
+
+            if (!categoriesList.contains(bar.getCategory())) {
+                categoriesList.add(bar.getCategory());
             }
         }
 
@@ -62,6 +80,24 @@ public class BarChartSceneController implements Initializable {
         for (int i = 0; i < namesList.size(); i++) {
             barGraphic.getData().addAll(series[i]);
             //series[i].setName(namesList.get(i));////TODO colors,names will be set by category
+        }
+
+        for (int i = 0; i < categoriesList.size(); i++) {
+            rgb = getRandomRGB();
+            colorRGB.add(rgb);
+        }
+
+        for (int i = 0; i < series.length; i++) {
+            int j = i;
+            Platform.runLater(()
+                    -> {
+                Set<Node> nodes = barGraphic.lookupAll(".series" + j);
+                for (Node n : nodes) {
+                    n.setStyle("-fx-background-color: rgb(" + colorRGB.get(categoriesList.indexOf(barChartModel.getBarList().get(j).getCategory())) + ");" +
+                            "-fx-bar-fill : rgb(" + colorRGB.get(categoriesList.indexOf(barChartModel.getBarList().get(j).getCategory())) + ")");
+                }
+            });
+            series[i].setName( namesList.get(i) + " / " +  (categoriesList.get(categoriesList.indexOf(barChartModel.getBarList().get(i).getCategory()))));
         }
 
 
@@ -81,6 +117,7 @@ public class BarChartSceneController implements Initializable {
                                         i++;
                                     } else {
                                         tl.stop();//hepsini çizince timeline'ı durdur
+                                        buttonPause.setDisable(true);//animasyon bitince buttonPause'u disable yap
                                         System.out.println("Time line stopped");
                                     }
                                 } catch (Exception e) {

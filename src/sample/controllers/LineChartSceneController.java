@@ -108,7 +108,7 @@ public class LineChartSceneController implements Initializable {
                             "-fx-stroke: rgb(" + colorRGB.get(categoriesList.indexOf(lineChartModel.getLineList().get(j).getCategory())) + ")");
                 }
             });
-            series[i].setName(namesList.get(j));
+            series[i].setName( namesList.get(i) + " / " +  (categoriesList.get(categoriesList.indexOf(lineChartModel.getLineList().get(i).getCategory()))));
         }
 
 
@@ -124,6 +124,8 @@ public class LineChartSceneController implements Initializable {
                                         i++;
                                     } else {
                                         tl.stop();
+                                        buttonPause.setDisable(true);//animasyon bitince buttonPause'u disable yap
+                                        System.out.println("Time line stopped");
                                     }
                                 } catch (Exception e) {
                                     System.out.println(e.getMessage());
