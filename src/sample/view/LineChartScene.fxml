@@ -5,11 +5,12 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.LineChartSceneController">
+<BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.LineChartSceneController">
     <top>
         <Label fx:id="labelTitle" alignment="CENTER" BorderPane.alignment="CENTER">
             <font>
@@ -25,6 +26,7 @@
                         <Button fx:id="buttonReload" layoutX="116.0" layoutY="-7.0" mnemonicParsing="false" onAction="#reloadAnimation" prefHeight="34.0" prefWidth="98.0" text="RELOAD" />
                         <Button fx:id="buttonPause" layoutX="-5.0" layoutY="-7.0" mnemonicParsing="false" onAction="#pauseAnimation" prefHeight="34.0" prefWidth="98.0" text="PAUSE" />
                         <Button fx:id="buttonStart" layoutX="-125.0" layoutY="-7.0" mnemonicParsing="false" onAction="#startAnimation" prefHeight="34.0" prefWidth="98.0" text="START" />
+                  <CheckBox fx:id="checkBoxShowHide" layoutX="227.0" layoutY="2.0" mnemonicParsing="false" text="Show Legend" />
                     </children>
                 </Group>
             </center>

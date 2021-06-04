@@ -4,6 +4,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import sample.Bar;
@@ -33,6 +36,9 @@ public class BarChartSceneController implements Initializable {
     private Label labelTitle;
     @FXML
     private Button buttonStart, buttonPause, buttonReload;
+    @FXML
+    private CheckBox checkBoxShowHide;
+
 
     int i, seriesIndex;
     Timeline tl = new Timeline();
@@ -147,6 +153,22 @@ public class BarChartSceneController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         buttonPause.setDisable(true);
         buttonReload.setDisable(true);
+        barGraphic.setLegendVisible(false);//hide legend at the beginning
+
+        checkBoxShowHide.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                if (t1) {
+                    barGraphic.setLegendVisible(true);
+                    checkBoxShowHide.setText("Hide Legend");
+
+                } else {
+                    checkBoxShowHide.setText("Show Legend");
+                    barGraphic.setLegendVisible(false);
+
+                }
+            }
+        });
     }
 
 
@@ -184,6 +206,7 @@ public class BarChartSceneController implements Initializable {
         buttonPause.setDisable(true);
         startAnimation();
     }
+
 
 
     public void setBarChart(BarChartModel barChartModel) {

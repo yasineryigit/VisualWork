@@ -4,6 +4,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +18,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import sample.Line;
@@ -43,6 +46,9 @@ public class LineChartSceneController implements Initializable {
     private Label labelTitle;
 
     @FXML
+    private CheckBox checkBoxShowHide;
+
+    @FXML
     private Button buttonStart, buttonPause, buttonReload;
 
     Timeline tl = new Timeline();
@@ -53,6 +59,8 @@ public class LineChartSceneController implements Initializable {
     private ObservableList<Integer> values = FXCollections.observableArrayList();
     private ObservableList<String> years = FXCollections.observableArrayList();
     private ObservableList<String> categories = FXCollections.observableArrayList();
+    List<String> namesList = new ArrayList<>();
+    List<String> categoriesList = new ArrayList<>();
 
     public String getRandomRGB() {
         double r = Math.floor(Math.random() * 255);
@@ -64,11 +72,9 @@ public class LineChartSceneController implements Initializable {
     public void drawGraphic(LineChartModel lineChartModel) {
         System.out.println("Gelen obje sayisi: " + lineChartModel.getLineList().size());
 
-        List<String> namesList = new ArrayList<>();
-        List<String> categoriesList = new ArrayList<>();
+
         List<String> colorRGB = new ArrayList<>();
         String rgb = "";
-
 
         labelTitle.setText(lineChartModel.getTitle());//title'ı yaz
         lineGraphic.getYAxis().setLabel(lineChartModel.getxAxisLabel());//axis labeli yaz
@@ -108,7 +114,7 @@ public class LineChartSceneController implements Initializable {
                             "-fx-stroke: rgb(" + colorRGB.get(categoriesList.indexOf(lineChartModel.getLineList().get(j).getCategory())) + ")");
                 }
             });
-            series[i].setName( namesList.get(i) + " / " +  (categoriesList.get(categoriesList.indexOf(lineChartModel.getLineList().get(i).getCategory()))));
+            series[i].setName(namesList.get(i) + " / " + (categoriesList.get(categoriesList.indexOf(lineChartModel.getLineList().get(i).getCategory()))));
         }
 
 
@@ -170,8 +176,8 @@ public class LineChartSceneController implements Initializable {
     public void reloadAnimation(ActionEvent e) {
         tl.stop();
         tl.getKeyFrames().clear();
-        i=0;
-        seriesIndex=0;
+        i = 0;
+        seriesIndex = 0;
         lineGraphic.getData().clear();
         buttonStart.setDisable(false);
         buttonReload.setDisable(true);
@@ -188,11 +194,28 @@ public class LineChartSceneController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         buttonPause.setDisable(true);
         buttonReload.setDisable(true);
+        lineGraphic.setLegendVisible(false);//hide legend at the beginning
+
+        checkBoxShowHide.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                if (t1) {
+                    lineGraphic.setLegendVisible(true);
+                    checkBoxShowHide.setText("Hide Legend");
+
+                } else {
+                    checkBoxShowHide.setText("Show Legend");
+                    lineGraphic.setLegendVisible(false);
+
+                }
+            }
+        });
     }
 
     //pencere kapatılırsa time'line ı durdur
     public void exit() {
         tl.stop();
     }
+
 
 }
