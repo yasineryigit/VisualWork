@@ -266,6 +266,7 @@ public class MainController implements Initializable {
                     stage.setMaximized(true);
                     stage.setMinHeight(466);
                     stage.setMinWidth(500);
+                    stage.setOnCloseRequest(event1 -> {barChartSceneController.exit();});
                     stage.show();//BarChartScene'i aç
 
 
@@ -290,6 +291,7 @@ public class MainController implements Initializable {
                     stage.setMaximized(true);
                     stage.setMinHeight(466);
                     stage.setMinWidth(500);
+                    stage.setOnCloseRequest(event1 -> {lineChartSceneController.exit();});
                     stage.show();
                     // Hide this current window (if this is what you want)
                     //((Node)(event.getSource())).getScene().getWindow().hide();

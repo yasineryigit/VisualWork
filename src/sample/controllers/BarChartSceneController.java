@@ -3,7 +3,6 @@ package sample.controllers;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -139,8 +138,8 @@ public class BarChartSceneController implements Initializable {
     public void reloadAnimation(ActionEvent e) {
         tl.stop();
         tl.getKeyFrames().clear();
-        i=0;
-        seriesIndex=0;
+        i = 0;
+        seriesIndex = 0;
         barGraphic.getData().clear();
         buttonStart.setDisable(false);
         buttonReload.setDisable(true);
@@ -154,10 +153,8 @@ public class BarChartSceneController implements Initializable {
         this.barChartModel = barChartModel;
     }
 
-    @FXML
-    public void exitApplication(ActionEvent event) {
+    //pencere kapatılırsa time'line ı durdur
+    public void exit() {
         tl.stop();
-        Platform.exit();
-
     }
 }

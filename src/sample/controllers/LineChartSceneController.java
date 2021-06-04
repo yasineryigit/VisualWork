@@ -188,4 +188,9 @@ public class LineChartSceneController implements Initializable {
         buttonReload.setDisable(true);
     }
 
+    //pencere kapatılırsa time'line ı durdur
+    public void exit() {
+        tl.stop();
+    }
+
 }
