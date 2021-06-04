@@ -24,7 +24,7 @@
                 <Button fx:id="buttonReload" layoutX="82.0" layoutY="-8.0" mnemonicParsing="false" onAction="#reloadAnimation" prefHeight="34.0" prefWidth="98.0" text="RELOAD" />
                 <Button fx:id="buttonPause" layoutX="-53.0" layoutY="-8.0" mnemonicParsing="false" onAction="#pauseAnimation" prefHeight="34.0" prefWidth="98.0" text="PAUSE" />
                 <Button fx:id="buttonStart" layoutX="-189.0" layoutY="-8.0" mnemonicParsing="false" onAction="#startAnimation" prefHeight="34.0" prefWidth="98.0" text="START" />
-            <CheckBox fx:id="checkBoxShowHide" layoutX="194.0" mnemonicParsing="false" text="Show" />
+            <CheckBox fx:id="checkBoxShowHide" layoutX="194.0" mnemonicParsing="false" text="Show Legend" />
             </children>
         </Group>
     </bottom>

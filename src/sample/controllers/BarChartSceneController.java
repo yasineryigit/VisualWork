@@ -85,7 +85,6 @@ public class BarChartSceneController implements Initializable {
         //barGraphic içine tüm serileri ekle
         for (int i = 0; i < namesList.size(); i++) {
             barGraphic.getData().addAll(series[i]);
-            //series[i].setName(namesList.get(i));////TODO colors,names will be set by category
         }
 
         for (int i = 0; i < categoriesList.size(); i++) {

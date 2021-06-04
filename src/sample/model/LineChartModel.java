@@ -10,14 +10,11 @@ import java.util.List;
 public class LineChartModel extends Chart {
 
     List<Line> lineList = new ArrayList<>();
-    private String title, xAxisLabel;
+    String title, xAxisLabel;
 
+    //Default Constructor
     public LineChartModel() {
-        super("","");
-    }
-
-    public LineChartModel(String title, String xAxisLabel) {
-        super(title, xAxisLabel);
+        super();
     }
 
     public LineChartModel(List<Line> lineList, String title, String xAxisLabel) {
@@ -32,13 +29,5 @@ public class LineChartModel extends Chart {
     }
 
 
-    @Override
-    public void setCaption(String caption) {
 
-    }
-
-    @Override
-    public void reset() {
-
-    }
 }

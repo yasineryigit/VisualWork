@@ -29,14 +29,4 @@ public class BarChartModel extends Chart {
 
 
 
-
-    @Override
-    public void setCaption(String caption) {
-
-    }
-
-    @Override
-    public void reset() {
-
-    }
 }
