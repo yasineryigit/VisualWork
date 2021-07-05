@@ -327,7 +327,7 @@ public class MainController implements Initializable {
     }
 
 
-    private void comboBoxlariHazirla() {
+    private void comboBoxlariHazirla() { //local veya internet seçeneklerine göre görünümü değiştirir
 
         ObservableList<String> animationMenulist = comboBoxAnimationType.getItems();
         animationMenulist.add("Bar Chart");
@@ -336,7 +336,6 @@ public class MainController implements Initializable {
         buttonSelect.setVisible(true);
         buttonSelect.setText("Select File");
 
-    } //local veya internet seçeneklerine göre görünümü değiştirir
-
+    }
 
 }
